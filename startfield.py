@@ -49,6 +49,7 @@ class App:
     def on_init(self):
         random.seed(3)
         pygame.init()
+        pygame.mouse.set_visible(False)
         self.size = self.width, self.height = pygame.display.Info().current_w, pygame.display.Info().current_h
         self._display_surf = pygame.display.set_mode(self.size, pygame.FULLSCREEN | pygame.HWSURFACE | pygame.DOUBLEBUF)
         self._running = True
