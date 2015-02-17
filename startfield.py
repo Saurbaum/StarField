@@ -8,12 +8,10 @@ class App:
     def __init__(self):
         self._running = True
         self._display_surf = None
-        self.size = self.width, self.height = 640, 400
         self.overlayColour = (0, 255, 0)
         self.overlayPos = (50, 50)
         self.overlayTargetPos = (50, 50)
         self.overlayStartPos = (50, 50)
-        self.stars = self.updateStarfield()
         self.overlayMoveTime = 5
 
     def pickColour(self):
@@ -51,9 +49,11 @@ class App:
     def on_init(self):
         random.seed(3)
         pygame.init()
-        self._display_surf = pygame.display.set_mode(self.size, pygame.HWSURFACE | pygame.DOUBLEBUF)
+        self.size = self.width, self.height = pygame.display.Info().current_w, pygame.display.Info().current_h
+        self._display_surf = pygame.display.set_mode(self.size, pygame.FULLSCREEN | pygame.HWSURFACE | pygame.DOUBLEBUF)
         self._running = True
         self.now = time.time()
+        self.stars = self.updateStarfield()
 
     def on_event(self, event):
         if event.type == pygame.QUIT:
