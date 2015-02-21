@@ -5,7 +5,11 @@
 		[
 			[
 				"over",
-				"overlayStartTime"
+				"overlayTargetPos"
+			],
+			[
+				"ov",
+				"overlayPos"
 			],
 			[
 				"tim",
@@ -59,17 +63,50 @@
 			"file": "startfield.py",
 			"settings":
 			{
-				"buffer_size": 4571,
+				"buffer_size": 4577,
 				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "overlay.py",
+			"settings":
+			{
+				"buffer_size": 312,
+				"line_ending": "Unix",
+				"name": "class overlay:"
 			}
 		}
 	],
 	"build_system": "",
 	"command_palette":
 	{
-		"height": 243.0,
+		"height": 392.0,
 		"selected_items":
 		[
+			[
+				"git",
+				"Git: Fetch"
+			],
+			[
+				"fet",
+				"Git: Fetch"
+			],
+			[
+				"fetch",
+				"Git: Fetch"
+			],
+			[
+				"push",
+				"Git: Push Current Branch"
+			],
+			[
+				"git pus",
+				"Git: Push"
+			],
+			[
+				"git qu	",
+				"Git: Quick Commit"
+			],
 			[
 				"inst",
 				"Package Control: Install Package"
@@ -107,7 +144,7 @@
 	},
 	"find_in_files":
 	{
-		"height": 0.0,
+		"height": 93.0,
 		"where_history":
 		[
 		]
@@ -117,6 +154,8 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"self.size",
+			"width",
 			"updateStarfield"
 		],
 		"highlight": true,
@@ -144,15 +183,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4571,
+						"buffer_size": 4577,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1210,
-								1210
+								3177,
+								3177
 							]
 						],
 						"settings":
@@ -167,6 +206,37 @@
 					},
 					"stack_index": 0,
 					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "overlay.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 312,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								264,
+								264
+							]
+						],
+						"settings":
+						{
+							"auto_name": "class overlay:",
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
 				}
 			]
 		}
@@ -177,7 +247,7 @@
 	},
 	"input":
 	{
-		"height": 0.0
+		"height": 33.0
 	},
 	"layout":
 	{
@@ -209,6 +279,10 @@
 	"output.find_results":
 	{
 		"height": 0.0
+	},
+	"output.git":
+	{
+		"height": 112.0
 	},
 	"project": "Starfield.sublime-project",
 	"replace":
