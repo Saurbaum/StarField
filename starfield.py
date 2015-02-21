@@ -3,17 +3,13 @@ import time
 from collections import deque
 import pygame
 from pygame.locals import *
+import overlay
 
 class App:
 	def __init__(self):
 		self._running = True
 		self._display_surf = None
-		self.overlayColour = (0, 255, 0)
-		self.overlayPos = (50, 50)
-		self.overlayTargetPos = (50, 50)
-		self.overlayStartPos = (50, 50)
-
-		self.overlayMoveTime = 5
+		self.overlay = overlay.overlay()
 
 	def pickColour(self):
 		colour = random.randrange(0,5)
@@ -28,13 +24,8 @@ class App:
 		return (200, lightTint, lightTint)
 
 	def drawOverlay(self):
-		pygame.draw.line(self._display_surf, self.overlayColour, (0, self.overlayPos[1]), (self.width, self.overlayPos[1]))
-		pygame.draw.line(self._display_surf, self.overlayColour, (self.overlayPos[0], 0), (self.overlayPos[0], self.height))
-		pygame.draw.circle(self._display_surf, self.overlayColour, self.overlayPos, 20, 1)
-		pygame.draw.line(self._display_surf, self.overlayColour, (self.overlayPos[0] - 10, self.overlayPos[1] - 10), (self.overlayPos[0] - 18, self.overlayPos[1] - 18))
-		pygame.draw.line(self._display_surf, self.overlayColour, (self.overlayPos[0] + 10, self.overlayPos[1] - 10), (self.overlayPos[0] + 18, self.overlayPos[1] - 18))
-		pygame.draw.line(self._display_surf, self.overlayColour, (self.overlayPos[0] + 10, self.overlayPos[1] + 10), (self.overlayPos[0] + 18, self.overlayPos[1] + 18))
-		pygame.draw.line(self._display_surf, self.overlayColour, (self.overlayPos[0] - 10, self.overlayPos[1] + 10), (self.overlayPos[0] - 18, self.overlayPos[1] + 18))
+		self.overlay.draw(self._display_surf, self.width, self.height)
+		pass
 
 	def drawStarfield(self):
 		self._display_surf.fill((0,0,0))
@@ -71,19 +62,7 @@ class App:
 			self.stars = self.updateStarfield()
 			self.now = time.time()
 
-		if self.overlayPos == self.overlayTargetPos:
-			self.overlayStartPos = self.overlayTargetPos
-			self.overlayTargetPos = (random.randrange(0, self.width), random.randrange(0, self.height))
-			self.overlayStartTime = time.time()
-		else:
-			if time.time() > self.overlayStartTime + self.overlayMoveTime:
-				self.overlayPos = self.overlayTargetPos
-				self.overlayPos = self.overlayTargetPos
-			else:
-				timeOffset = (time.time() - self.overlayStartTime) / self.overlayMoveTime
-				xPos = self.overlayStartPos[0] + ((self.overlayTargetPos[0] - self.overlayStartPos[0]) * timeOffset)
-				yPos = self.overlayStartPos[1] + ((self.overlayTargetPos[1] - self.overlayStartPos[1]) * timeOffset)
-				self.overlayPos = (int(round(xPos)), int(round(yPos)))
+		self.overlay.update(time.time(), self.width, self.height)
 		pass
 
 	def on_render(self):
