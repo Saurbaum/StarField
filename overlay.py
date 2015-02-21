@@ -40,37 +40,3 @@ class overlay:
 	def targetReached(self):
 		self.pos = self.targetPos
 		pass
-
-	def setPos(self, pos):
-		self.pos = pos
-		pass
-
-	def getPos(self):
-		return self.pos
-
-	def getTargetPos(self):
-		return self.targetPos
-
-	def getStartPos(self):
-		return self.startPos
-
-	def setStartPos(self, newStartPos):
-		self.startPos = newStartPos
-		pass
-
-	def setTargetPos(self, newTargetPos):
-		self.targetPos = newTargetPos
-		pass
-
-	def setStartTime(self, time):
-		self.startTime = time
-		pass
-
-	def getStartTime(self):
-		return self.startTime
-
-	def getMoveTime(self):
-		return self.moveTime
-
-	def getColour(self):
-		return self.colour
