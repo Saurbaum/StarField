@@ -1,52 +1,33 @@
-import random
 import time
 from collections import deque
 import pygame
 from pygame.locals import *
 import overlay
+import stars
 
 class App:
 	def __init__(self):
 		self._running = True
 		self._display_surf = None
-		self.overlay = overlay.overlay()
-
-	def pickColour(self):
-		colour = random.randrange(0,5)
-		if colour == 0: # Red
-			blueTint = random.randrange(50,128)
-			return (random.randrange(200,255), blueTint, blueTint)
-		if colour == 1: # Blue
-			return (random.randrange(220, 255), random.randrange(220,255), random.randrange(220, 255))
-			
-		# White
-		lightTint = random.randrange(200,255) 
-		return (200, lightTint, lightTint)
-
+		
 	def drawOverlay(self):
-		self.overlay.draw(self._display_surf, self.width, self.height)
+		self.overlay.draw(self._display_surf)
 		pass
 
 	def drawStarfield(self):
 		self._display_surf.fill((0,0,0))
-		for star in self.stars:
+		for star in self.stars.getStars():
 			pygame.draw.circle(self._display_surf, star[0], star[1], star[2], 0)
 
-	def updateStarfield(self):
-		tempDeque = deque()
-		for i in range(0, 40):
-			tempDeque.append((self.pickColour(), (random.randrange(0,self.width), random.randrange(0,self.height)), random.randrange(1,5,2)))
-		return tempDeque
-
 	def on_init(self):
-		random.seed(3)
 		pygame.init()
 		pygame.mouse.set_visible(False)
 		self.size = self.width, self.height = pygame.display.Info().current_w, pygame.display.Info().current_h
 		self._display_surf = pygame.display.set_mode(self.size, pygame.FULLSCREEN | pygame.HWSURFACE | pygame.DOUBLEBUF)
 		self._running = True
 		self.now = time.time()
-		self.stars = self.updateStarfield()
+		self.overlay = overlay.overlay(self.width, self.height)
+		self.stars = stars.stars(self.width, self.height)
 
 	def on_event(self, event):
 		if event.type == pygame.QUIT:
@@ -55,14 +36,14 @@ class App:
 			if event.key == pygame.K_ESCAPE:
 				self._running = False
 			if event.key == pygame.K_SPACE:
-				self.updateStarfield()
+				self.stars.updateStarfield()
 	
 	def on_loop(self):
 		if time.time() >= self.now + 0.5:
-			self.stars = self.updateStarfield()
+			self.stars.updateStarfield()
 			self.now = time.time()
 
-		self.overlay.update(time.time(), self.width, self.height)
+		self.overlay.update(time.time())
 		pass
 
 	def on_render(self):
