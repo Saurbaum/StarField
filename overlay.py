@@ -2,18 +2,20 @@ import pygame
 import random
 
 class overlay:
-	def __init__(self):
+	def __init__(self, width, height):
 		self.colour = (0, 255, 0)
 		self.pos = (50, 50)
 		self.targetPos = (50, 50)
 		self.startPos = (50, 50)
 		self.moveTime = 5
 		self.startTime = 0;
+		self.width = width
+		self.height = height
 		random.seed(3)
 
-	def draw(self, surface, width, height):
-		pygame.draw.line(surface, self.colour, (0, self.pos[1]), (width, self.pos[1]))
-		pygame.draw.line(surface, self.colour, (self.pos[0], 0), (self.pos[0], height))
+	def draw(self, surface):
+		pygame.draw.line(surface, self.colour, (0, self.pos[1]), (self.width, self.pos[1]))
+		pygame.draw.line(surface, self.colour, (self.pos[0], 0), (self.pos[0], self.height))
 		pygame.draw.circle(surface, self.colour, self.pos, 20, 1)
 		pygame.draw.line(surface, self.colour, (self.pos[0] - 10, self.pos[1] - 10), (self.pos[0] - 18, self.pos[1] - 18))
 		pygame.draw.line(surface, self.colour, (self.pos[0] + 10, self.pos[1] - 10), (self.pos[0] + 18, self.pos[1] - 18))
@@ -21,10 +23,10 @@ class overlay:
 		pygame.draw.line(surface, self.colour, (self.pos[0] - 10, self.pos[1] + 10), (self.pos[0] - 18, self.pos[1] + 18))
 		pass
 
-	def update(self, updateTime, width, height):
+	def update(self, updateTime):
 		if self.pos == self.targetPos:
 			self.startPos = self.targetPos
-			self.targetPos = (random.randrange(0, width), random.randrange(0, height))
+			self.targetPos = (random.randrange(0, self.width), random.randrange(0, self.height))
 			self.startTime = updateTime
 		else:
 			if updateTime > self.startTime + self.moveTime:
