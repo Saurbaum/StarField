@@ -59,7 +59,23 @@
 			"file": "starfield.py",
 			"settings":
 			{
-				"buffer_size": 4077,
+				"buffer_size": 2071,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "stars.py",
+			"settings":
+			{
+				"buffer_size": 1040,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "overlay.py",
+			"settings":
+			{
+				"buffer_size": 3168,
 				"line_ending": "Windows"
 			}
 		}
@@ -67,7 +83,7 @@
 	"build_system": "",
 	"command_palette":
 	{
-		"height": 127.0,
+		"height": 392.0,
 		"selected_items":
 		[
 			[
@@ -118,6 +134,8 @@
 	"file_history":
 	[
 		"/C/Users/Ian/Documents/Python/StarField/Starfield.sublime-workspace",
+		"/C/Users/Ian/Documents/Python/StarField/overlay.py",
+		"/C/Users/Ian/Documents/Python/StarField/starfield.py",
 		"/C/Users/Ian/Documents/Python/StarField/startfield.py"
 	],
 	"find":
@@ -163,28 +181,85 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4077,
+						"buffer_size": 2071,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2119,
-								2119
+								394,
+								394
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/Python/Python.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": false
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "stars.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1040,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								476,
+								476
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "overlay.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3168,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								93,
+								93
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
 					"type": "text"
 				}
 			]

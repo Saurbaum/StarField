@@ -6,66 +6,66 @@ import overlay
 import stars
 
 class App:
-	def __init__(self):
-		self._running = True
-		self._display_surf = None
-		
-	def drawOverlay(self):
-		self.overlay.draw(self._display_surf)
-		pass
+    def __init__(self):
+        self._running = True
+        self._display_surf = None
+        
+    def drawOverlay(self):
+        self.overlay.draw(self._display_surf)
+        pass
 
-	def drawStarfield(self):
-		self._display_surf.fill((0,0,0))
-		for star in self.stars.getStars():
-			pygame.draw.circle(self._display_surf, star[0], star[1], star[2], 0)
+    def drawStarfield(self):
+        self._display_surf.fill((0,0,0))
+        for star in self.stars.getStars():
+            pygame.draw.circle(self._display_surf, star[0], star[1], star[2], 0)
 
-	def on_init(self):
-		pygame.init()
-		pygame.mouse.set_visible(False)
-		self.size = self.width, self.height = pygame.display.Info().current_w, pygame.display.Info().current_h
-		self._display_surf = pygame.display.set_mode(self.size, pygame.FULLSCREEN | pygame.HWSURFACE | pygame.DOUBLEBUF)
-		self._running = True
-		self.now = time.time()
-		self.overlay = overlay.overlay(self.width, self.height)
-		self.stars = stars.stars(self.width, self.height)
+    def on_init(self):
+        pygame.init()
+        pygame.mouse.set_visible(False)
+        self.size = self.width, self.height = pygame.display.Info().current_w, pygame.display.Info().current_h
+        self._display_surf = pygame.display.set_mode(self.size, pygame.FULLSCREEN | pygame.HWSURFACE | pygame.DOUBLEBUF)
+        self._running = True
+        self.now = time.time()
+        self.overlay = overlay.overlay(self.width, self.height)
+        self.stars = stars.stars(self.width, self.height)
 
-	def on_event(self, event):
-		if event.type == pygame.QUIT:
-			self._running = False            
-		if event.type == pygame.KEYUP:
-			if event.key == pygame.K_ESCAPE:
-				self._running = False
-			if event.key == pygame.K_SPACE:
-				self.stars.updateStarfield()
-	
-	def on_loop(self):
-		if time.time() >= self.now + 0.5:
-			self.stars.updateStarfield()
-			self.now = time.time()
+    def on_event(self, event):
+        if event.type == pygame.QUIT:
+            self._running = False            
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_ESCAPE:
+                self._running = False
+            if event.key == pygame.K_SPACE:
+                self.stars.updateStarfield()
+    
+    def on_loop(self):
+        if time.time() >= self.now + 0.5:
+            self.stars.updateStarfield()
+            self.now = time.time()
 
-		self.overlay.update(time.time())
-		pass
+        self.overlay.update(time.time())
+        pass
 
-	def on_render(self):
-		self.drawStarfield()
-		self.drawOverlay()
-		pygame.display.update()
-		pass
+    def on_render(self):
+        self.drawStarfield()
+        self.drawOverlay()
+        pygame.display.update()
+        pass
 
-	def on_cleanup(self):
-		pygame.quit()
+    def on_cleanup(self):
+        pygame.quit()
 
-	def on_execute(self):
-		if self.on_init() == False:
-			self._running = False
+    def on_execute(self):
+        if self.on_init() == False:
+            self._running = False
 
-		while( self._running ):
-			for event in pygame.event.get():
-				self.on_event(event)
-			self.on_loop()
-			self.on_render()
-		self.on_cleanup()
+        while( self._running ):
+            for event in pygame.event.get():
+                self.on_event(event)
+            self.on_loop()
+            self.on_render()
+        self.on_cleanup()
 
 if __name__ == "__main__" :
-	theApp = App()
-	theApp.on_execute()
+    theApp = App()
+    theApp.on_execute()
