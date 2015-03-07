@@ -56,20 +56,36 @@
 	"buffers":
 	[
 		{
-			"file": "startfield.py",
+			"file": "starfield.py",
 			"settings":
 			{
-				"buffer_size": 4571,
-				"line_ending": "Unix"
+				"buffer_size": 4077,
+				"line_ending": "Windows"
 			}
 		}
 	],
 	"build_system": "",
 	"command_palette":
 	{
-		"height": 243.0,
+		"height": 127.0,
 		"selected_items":
 		[
+			[
+				"push",
+				"Git: Push"
+			],
+			[
+				"quick",
+				"Git: Quick Commit"
+			],
+			[
+				"comm",
+				"Git: Quick Commit"
+			],
+			[
+				"qui",
+				"Git: Quick Commit"
+			],
 			[
 				"inst",
 				"Package Control: Install Package"
@@ -79,13 +95,14 @@
 				"Preferences: Browse Packages"
 			]
 		],
-		"width": 449.0
+		"width": 400.0
 	},
 	"console":
 	{
 		"height": 139.0,
 		"history":
 		[
+			"git config --global user.email \"ian_newborn@hotmail.com\"",
 			"import urllib.request,os,hashlib; h = 'eb2297e1a458f27d836c04bb0cbaf282' + 'd0e7a3098092775ccb37ca9d6b2e4b7d'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
 		]
 	},
@@ -100,10 +117,12 @@
 	},
 	"file_history":
 	[
+		"/C/Users/Ian/Documents/Python/StarField/Starfield.sublime-workspace",
+		"/C/Users/Ian/Documents/Python/StarField/startfield.py"
 	],
 	"find":
 	{
-		"height": 25.0
+		"height": 23.0
 	},
 	"find_in_files":
 	{
@@ -140,26 +159,26 @@
 			[
 				{
 					"buffer": 0,
-					"file": "startfield.py",
+					"file": "starfield.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4571,
+						"buffer_size": 4077,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1210,
-								1210
+								2119,
+								2119
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/Python/Python.tmLanguage",
 							"tab_size": 4,
-							"translate_tabs_to_spaces": true
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -173,11 +192,11 @@
 	],
 	"incremental_find":
 	{
-		"height": 25.0
+		"height": 23.0
 	},
 	"input":
 	{
-		"height": 0.0
+		"height": 31.0
 	},
 	"layout":
 	{
@@ -210,10 +229,14 @@
 	{
 		"height": 0.0
 	},
+	"output.git":
+	{
+		"height": 377.0
+	},
 	"project": "Starfield.sublime-project",
 	"replace":
 	{
-		"height": 46.0
+		"height": 42.0
 	},
 	"save_all_on_build": true,
 	"select_file":
