@@ -3,9 +3,9 @@ import random
 
 class overlay:
 	def __init__(self, width, height):
-                random.seed()
-                self.pickNewColour()
-                self.colour = (self.red, self.green, self.blue)
+		random.seed()
+		self.pickNewColour()
+		self.colour = (self.red, self.green, self.blue)
 		self.pos = (random.randrange(0,width), random.randrange(0,height))
 		self.targetPos = (random.randrange(0,width), random.randrange(0,height))
 		self.startPos = self.pos
@@ -39,7 +39,7 @@ class overlay:
 
 	def update(self, updateTime):
 		if self.pos == self.targetPos:
-                        self.targetReached(updateTime)
+						self.targetReached(updateTime)
 		else:
 			if updateTime > self.startTime + self.moveTime:
 				self.targetReached(updateTime)
@@ -59,4 +59,4 @@ class overlay:
 		self.pickNewColour()
 
 	def tweenColours(self, startColour, endColour, progress):
-		return (startColour - ((startColour - endColour) * progress)
+		return (startColour - ((startColour - endColour) * progress))
