@@ -3,9 +3,10 @@ import random
 
 class overlay:
 	def __init__(self, width, height):
-		random.seed()
-		self.pickNewColour()
-		self.colour = (self.red, self.green, self.blue)
+                random.seed()
+                self.startColour = self.pickNewColour()
+                self.targetColour = self.pickNewColour()
+                self.colour = self.startColour
 		self.pos = (random.randrange(0,width), random.randrange(0,height))
 		self.targetPos = (random.randrange(0,width), random.randrange(0,height))
 		self.startPos = self.pos
@@ -24,22 +25,24 @@ class overlay:
 		pygame.draw.line(surface, self.colour, (self.pos[0] - 10, self.pos[1] + 10), (self.pos[0] - 18, self.pos[1] + 18))
 		
 	def pickNewColour(self):
-		self.red = random.randrange(10,255)
-		self.green = random.randrange(10,255)
-		self.blue = random.randrange(10,255)
+		red = random.randrange(10,255)
+		green = random.randrange(10,255)
+		blue = random.randrange(10,255)
 
-		if self.red + self.green + self.blue < 255:
+		if red + green + blue < 255:
 			selector = random.randrange(0,2)
 			if selector == 0:
-				self.red = random.randrange(200,255)
+				red = random.randrange(200,255)
 			if selector == 1:
-				self.green = random.randrange(200,255)
+				green = random.randrange(200,255)
 			if selector == 2:
-				self.blue = random.randrange(200,255)
+				blue = random.randrange(200,255)
+
+		return (red, green, blue)
 
 	def update(self, updateTime):
 		if self.pos == self.targetPos:
-						self.targetReached(updateTime)
+                        self.targetReached(updateTime)
 		else:
 			if updateTime > self.startTime + self.moveTime:
 				self.targetReached(updateTime)
@@ -47,7 +50,7 @@ class overlay:
 				timeOffset = (updateTime - self.startTime) / self.moveTime
 				xPos = self.startPos[0] + ((self.targetPos[0] - self.startPos[0]) * timeOffset)
 				yPos = self.startPos[1] + ((self.targetPos[1] - self.startPos[1]) * timeOffset)
-				self.colour = (self.tweenColours(self.colour[0], self.red, timeOffset),self.tweenColours(self.colour[1], self.green, timeOffset),self.tweenColours(self.colour[2], self.blue, timeOffset))
+				self.colour = self.tweenColours(self.startColour, self.targetColour, timeOffset)
 				self.pos = (int(round(xPos)), int(round(yPos)))
 
 	def targetReached(self, updateTime):
@@ -55,8 +58,8 @@ class overlay:
 		self.startPos = self.targetPos
 		self.targetPos = (random.randrange(0, self.width), random.randrange(0, self.height))
 		self.startTime = updateTime
-		self.colour = (self.red, self.green, self.blue)
-		self.pickNewColour()
+		self.startColour = self.targetColour
+		self.targetColour = self.pickNewColour()
 
 	def tweenColours(self, startColour, endColour, progress):
-		return (startColour - ((startColour - endColour) * progress))
+		return (int(round((startColour[0] + ((endColour[0] - startColour[0]) * progress)))),int(round((startColour[1] + ((endColour[1] - startColour[1]) * progress)))),int(round((startColour[2] + ((endColour[2] - startColour[2]) * progress)))))
