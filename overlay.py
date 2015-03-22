@@ -42,7 +42,7 @@ class overlay:
 
     def update(self, updateTime):
         if self.pos == self.targetPos:
-                        self.targetReached(updateTime)
+            self.targetReached(updateTime)
         else:
             if updateTime > self.startTime + self.moveTime:
                 self.targetReached(updateTime)
@@ -58,6 +58,7 @@ class overlay:
         self.startPos = self.targetPos
         self.targetPos = (random.randrange(0, self.width), random.randrange(0, self.height))
         self.startTime = updateTime
+        self.moveTime =random.randrange(5,15)
         self.startColour = self.targetColour
         self.targetColour = self.pickNewColour()
 
