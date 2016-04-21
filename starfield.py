@@ -4,6 +4,7 @@ import pygame
 from pygame.locals import *
 import overlay
 import stars
+import ctypes
 
 class App:
     def __init__(self):
@@ -22,6 +23,9 @@ class App:
     def on_init(self):
         pygame.init()
         pygame.mouse.set_visible(False)
+
+        user32 = ctypes.windll.user32
+        user32.SetProcessDPIAware()
         self.size = self.width, self.height = pygame.display.Info().current_w, pygame.display.Info().current_h
         self._display_surf = pygame.display.set_mode(self.size, pygame.FULLSCREEN | pygame.HWSURFACE | pygame.DOUBLEBUF)
         self._running = True

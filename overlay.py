@@ -58,7 +58,7 @@ class overlay:
         self.startPos = self.targetPos
         self.targetPos = (random.randrange(0, self.width), random.randrange(0, self.height))
         self.startTime = updateTime
-        self.moveTime =random.randrange(5,15)
+        self.moveTime = random.randrange(2, 5)
         self.startColour = self.targetColour
         self.targetColour = self.pickNewColour()
 
