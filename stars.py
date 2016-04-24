@@ -16,7 +16,9 @@ class stars(object):
             return (random.randrange(200,255), blueTint, blueTint)
         if colour == 1: # Blue
             return (random.randrange(220, 255), random.randrange(220,255), random.randrange(220, 255))
-            
+        if colour == 2: # Orange
+            orange = random.randrange(200,255)
+            return (orange, orange, random.randrange(50, 128))    
         # White
         lightTint = random.randrange(200,255) 
         return (200, lightTint, lightTint)
@@ -25,7 +27,7 @@ class stars(object):
     def updateStarfield(self):
         tempDeque = deque()
         for i in range(0, 40):
-            tempDeque.append((self.pickColour(), (random.randrange(0,self.width), random.randrange(0,self.height)), random.randrange(1,5,2)))
+            tempDeque.append((self.pickColour(), (random.randrange(0,self.width), random.randrange(0,self.height)), random.randrange(1,7,2)))
         
         self.stars = tempDeque
 
