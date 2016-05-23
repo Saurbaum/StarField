@@ -1,4 +1,5 @@
 import pygame
+import pygame.freetype as freetype
 import random
 
 class overlay:
@@ -14,6 +15,9 @@ class overlay:
         self.startTime = 0;
         self.width = width
         self.height = height
+        self.updatePosText()
+        freetype.init()
+        self.font = freetype.SysFont("Ariel", 72)
 
     def draw(self, surface):
         pygame.draw.line(surface, self.colour, (0, self.pos[1]), (self.width, self.pos[1]))
@@ -23,7 +27,12 @@ class overlay:
         pygame.draw.line(surface, self.colour, (self.pos[0] + 10, self.pos[1] - 10), (self.pos[0] + 18, self.pos[1] - 18))
         pygame.draw.line(surface, self.colour, (self.pos[0] + 10, self.pos[1] + 10), (self.pos[0] + 18, self.pos[1] + 18))
         pygame.draw.line(surface, self.colour, (self.pos[0] - 10, self.pos[1] + 10), (self.pos[0] - 18, self.pos[1] + 18))
-        
+        self.font.render_to(surface, (0, 0), self.posText, self.colour, None, 0, 0, 72)
+
+    def updatePosText(self):
+        self.posText = ''.join((str(self.pos[0]/10.0), ', ', str(self.pos[1]/10.0)))
+        pass
+
     def pickNewColour(self):
         red = random.randrange(10,255)
         green = random.randrange(10,255)
@@ -52,6 +61,8 @@ class overlay:
                 yPos = self.startPos[1] + ((self.targetPos[1] - self.startPos[1]) * timeOffset)
                 self.colour = self.tweenColours(self.startColour, self.targetColour, timeOffset)
                 self.pos = (int(round(xPos)), int(round(yPos)))
+        self.updatePosText()
+        pass
 
     def targetReached(self, updateTime):
         self.pos = self.targetPos

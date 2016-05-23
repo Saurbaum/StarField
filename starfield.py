@@ -4,12 +4,17 @@ import pygame
 from pygame.locals import *
 import overlay
 import stars
+import grid
 import ctypes
 
 class App:
     def __init__(self):
         self._running = True
         self._display_surf = None
+
+    def drawGrid(self):
+        self.grid.draw(self._display_surf);
+        pass
         
     def drawOverlay(self):
         self.overlay.draw(self._display_surf)
@@ -32,6 +37,7 @@ class App:
         self.now = time.time()
         self.overlay = overlay.overlay(self.width, self.height)
         self.stars = stars.stars(self.width, self.height)
+        self.grid = grid.grid(self.width, self.height, 100, (0, 64, 0))
 
     def on_event(self, event):
         if event.type == pygame.QUIT:
@@ -53,6 +59,7 @@ class App:
     def on_render(self):
         self.drawStarfield()
         self.drawOverlay()
+        self.drawGrid()
         pygame.display.update()
         pass
 
