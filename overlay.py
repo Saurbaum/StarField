@@ -1,7 +1,7 @@
 import pygame
-import pygame.freetype as freetype
 import random
 import grid
+import textDisplay
 
 class overlay:
     def __init__(self, width, height):
@@ -16,10 +16,9 @@ class overlay:
         self.startTime = 0;
         self.width = width
         self.height = height
-        self.updatePosText()
-        freetype.init()
-        self.font = freetype.SysFont("Ariel", 24)
         self.grid = grid.grid(self.width, self.height, 250)
+        self.history = textDisplay.textDisplay((0,0), self.width, self.height)
+        self.updatePosText()
         pass
 
     def draw(self, surface):
@@ -33,11 +32,11 @@ class overlay:
         pygame.draw.line(surface, self.colour, (self.pos[0] + 10, self.pos[1] + 10), (self.pos[0] + 18, self.pos[1] + 18))
         pygame.draw.line(surface, self.colour, (self.pos[0] - 10, self.pos[1] + 10), (self.pos[0] - 18, self.pos[1] + 18))
         
-        self.font.render_to(surface, (0, 0), self.posText, self.colour, None, 0, 0, 24)
+        self.history.draw(surface, self.colour)
         pass
 
     def updatePosText(self):
-        self.posText = ''.join((str(self.pos[0]/10.0), ', ', str(self.pos[1]/10.0)))
+        self.history.updateCurrentText(''.join((str(self.pos[0]/10.0), ', ', str(self.pos[1]/10.0))))
         pass
 
     def pickNewColour(self):
@@ -57,6 +56,8 @@ class overlay:
         return (red, green, blue)
 
     def update(self, updateTime):
+        self.updatePosText()
+
         if self.pos == self.targetPos:
             self.targetReached(updateTime)
         else:
@@ -78,7 +79,7 @@ class overlay:
         self.moveTime = random.randrange(2, 5)
         self.startColour = self.targetColour
         self.targetColour = self.pickNewColour()
-        self.updatePosText()
+        self.history.updateHistory()
         pass
 
     def tweenColours(self, startColour, endColour, progress):
