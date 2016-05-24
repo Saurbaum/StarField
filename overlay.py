@@ -36,7 +36,7 @@ class overlay:
         pass
 
     def updatePosText(self):
-        self.history.updateCurrentText(''.join((str(self.pos[0]/10.0), ', ', str(self.pos[1]/10.0))))
+        self.history.updateCurrentText(''.join((str(self.pos[0]/10.0), ', ', str(self.pos[1]/10.0))), self.colour)
         pass
 
     def pickNewColour(self):
