@@ -12,3 +12,5 @@ In making it high DPI aware it's possible I've made it not cross platform.  Need
 This is the main application that creates the stars and overlay.
 It will create 40 random stars every few seconds.
 The Overlay consists of a targeting reticle, a grid and a text display of the current location and a history of the coordinates that the targeting reticle has been too.
+
+[See an example here] (ScreenShot.png)
