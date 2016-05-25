@@ -1,3 +1,4 @@
+import pygame
 from collections import deque
 import random
 
@@ -8,6 +9,12 @@ class stars(object):
         random.seed(3)
         self.stars = deque()
         self.updateStarfield()
+        pass
+
+    def draw(self, surface):
+        for star in self.stars:
+            pygame.draw.circle(surface, star[0], star[1], star[2], 0)
+        pass
         
     def pickColour(self):
         colour = random.randrange(0,5)
@@ -30,6 +37,4 @@ class stars(object):
             tempDeque.append((self.pickColour(), (random.randrange(0,self.width), random.randrange(0,self.height)), random.randrange(1,7,2)))
         
         self.stars = tempDeque
-
-    def getStars(self):
-        return self.stars
+        pass

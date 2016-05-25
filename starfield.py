@@ -16,10 +16,9 @@ class App:
         pass
 
     def drawStarfield(self):
-        self._display_surf.fill((0,0,0))
-        for star in self.stars.getStars():
-            pygame.draw.circle(self._display_surf, star[0], star[1], star[2], 0)
-
+        self.stars.draw(self._display_surf)
+        pass
+        
     def on_init(self):
         pygame.init()
         pygame.mouse.set_visible(False)
@@ -51,6 +50,7 @@ class App:
         pass
 
     def on_render(self):
+        self._display_surf.fill((0,0,0))
         self.drawStarfield()
         self.drawOverlay()
         pygame.display.update()
