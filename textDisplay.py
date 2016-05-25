@@ -19,7 +19,9 @@ class textDisplay:
         pass
 
     def drawBorder(self, surface, colour):
-        pygame.draw.line(surface, (colour[0]/5, colour[1]/5, colour[2]/5), (self.borderPos[0], self.borderPos[1] + (self.borderHeight/2)), (self.borderPos[0] + self.borderWidth, self.borderPos[1] + (self.borderHeight/2)), self.borderHeight)
+        background = pygame.Surface((self.borderWidth, self.borderHeight), pygame.SRCALPHA | pygame.HWSURFACE)
+        background.fill((colour[0]/5, colour[1]/5, colour[2]/5, 220))
+        surface.blit(background, self.borderPos)
 
         pygame.draw.line(surface, colour, (self.borderPos[0], self.borderPos[1]), (self.borderPos[0] + self.borderWidth, self.borderPos[1]), 2)
         pygame.draw.line(surface, colour, (self.borderPos[0] + self.borderWidth, self.borderPos[1]), (self.borderPos[0] + self.borderWidth, self.borderPos[1] + self.borderHeight), 2)
