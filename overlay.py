@@ -17,7 +17,7 @@ class overlay:
         self.width = width
         self.height = height
         self.grid = grid.grid(self.width, self.height, 250)
-        self.history = textDisplay.textDisplay((10, 10), 256, 500)
+        self.history = textDisplay.textDisplay((10, 10), 230, 480)
         self.updatePosText()
         pass
 
