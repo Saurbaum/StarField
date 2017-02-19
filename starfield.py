@@ -1,3 +1,4 @@
+import sys
 import time
 from collections import deque
 import pygame
@@ -23,8 +24,10 @@ class App:
         pygame.init()
         pygame.mouse.set_visible(False)
 
-        user32 = ctypes.windll.user32
-        user32.SetProcessDPIAware()
+        if sys.platform.startswith == 'win32':
+            user32 = ctypes.windll.user32
+            user32.SetProcessDPIAware()
+
         self.size = self.width, self.height = pygame.display.Info().current_w, pygame.display.Info().current_h
         self._display_surf = pygame.display.set_mode(self.size, pygame.FULLSCREEN | pygame.HWSURFACE | pygame.DOUBLEBUF)
         self._running = True
