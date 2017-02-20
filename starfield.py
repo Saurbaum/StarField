@@ -24,7 +24,7 @@ class App:
         pygame.init()
         pygame.mouse.set_visible(False)
 
-        if sys.platform.startswith == 'win32':
+        if sys.platform.startswith("win32"):
             user32 = ctypes.windll.user32
             user32.SetProcessDPIAware()
 
