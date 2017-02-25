@@ -2,8 +2,7 @@
 	"folders":
 	[
 		{
-			"follow_symlinks": true,
-			"path": "/Users/iannewborn/Documents/python"
+			"path": "."
 		}
 	]
 }
