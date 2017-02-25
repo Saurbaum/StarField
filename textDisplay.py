@@ -16,18 +16,14 @@ class textDisplay:
         self.currentColour = (0, 0, 0)
         self.history = deque()
         self.textSize = 24
-        pass
 
     def drawBorder(self, surface, colour):
-        background = pygame.Surface((self.borderWidth, self.borderHeight), pygame.SRCALPHA | pygame.HWSURFACE)
-        background.fill((colour[0]/5, colour[1]/5, colour[2]/5, 220))
+        background = pygame.Surface((self.borderWidth, self.borderHeight), pygame.HWSURFACE)
+        background.set_alpha(220)
+        background.fill((colour[0]/5, colour[1]/5, colour[2]/5))
         surface.blit(background, self.borderPos)
 
-        pygame.draw.line(surface, colour, (self.borderPos[0], self.borderPos[1]), (self.borderPos[0] + self.borderWidth, self.borderPos[1]), 2)
-        pygame.draw.line(surface, colour, (self.borderPos[0] + self.borderWidth, self.borderPos[1]), (self.borderPos[0] + self.borderWidth, self.borderPos[1] + self.borderHeight), 2)
-        pygame.draw.line(surface, colour, (self.borderPos[0] + self.borderWidth, self.borderPos[1] + self.borderHeight), (self.borderPos[0], self.borderPos[1] + self.borderHeight), 2)
-        pygame.draw.line(surface, colour, (self.borderPos[0], self.borderPos[1] + self.borderHeight), (self.borderPos[0], self.borderPos[1]), 2)
-        pass
+        pygame.draw.rect(surface, colour, (self.borderPos[0], self.borderPos[1], self.borderPos[0] + self.borderWidth, self.borderPos[1] + self.borderHeight), 2)
 
     def draw(self, surface, colour):
         self.drawBorder(surface, colour)
@@ -36,15 +32,12 @@ class textDisplay:
         for entry in self.history:
             self.font.render_to(surface, (self.pos[0], self.pos[1] + (index * self.textSize)), entry[0], entry[1], None, 0, 0, self.textSize)
             index = index - 1
-        pass
 
     def updateCurrentText(self, text, colour):
         self.currentText = text
         self.currentColour = colour
-        pass
 
     def updateHistory(self):
         self.history.append((self.currentText, self.currentColour))
         if (len(self.history)) * self.textSize > self.height:
             self.history.popleft()
-        pass

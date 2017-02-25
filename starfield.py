@@ -14,11 +14,9 @@ class App:
         
     def drawOverlay(self):
         self.overlay.draw(self._display_surf)
-        pass
 
     def drawStarfield(self):
         self.stars.draw(self._display_surf)
-        pass
         
     def on_init(self):
         pygame.init()
@@ -28,12 +26,12 @@ class App:
             user32 = ctypes.windll.user32
             user32.SetProcessDPIAware()
 
-        self.size = self.width, self.height = pygame.display.Info().current_w, pygame.display.Info().current_h
-        self._display_surf = pygame.display.set_mode(self.size, pygame.FULLSCREEN | pygame.HWSURFACE | pygame.DOUBLEBUF)
+        width, height = pygame.display.Info().current_w, pygame.display.Info().current_h
+        self._display_surf = pygame.display.set_mode((width, height), pygame.FULLSCREEN | pygame.HWSURFACE | pygame.DOUBLEBUF)
         self._running = True
         self.now = time.time()
-        self.overlay = overlay.overlay(self.width, self.height)
-        self.stars = stars.stars(self.width, self.height)
+        self.overlay = overlay.overlay(width, height)
+        self.stars = stars.stars(width, height)
 
     def on_event(self, event):
         if event.type == pygame.QUIT:
@@ -50,21 +48,18 @@ class App:
             self.now = time.time()
 
         self.overlay.update(time.time())
-        pass
 
     def on_render(self):
         self._display_surf.fill((0,0,0))
         self.drawStarfield()
         self.drawOverlay()
         pygame.display.update()
-        pass
 
     def on_cleanup(self):
         pygame.quit()
 
     def on_execute(self):
-        if self.on_init() == False:
-            self._running = False
+        self.on_init()
 
         while( self._running ):
             for event in pygame.event.get():

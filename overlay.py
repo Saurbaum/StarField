@@ -13,13 +13,12 @@ class overlay:
         self.targetPos = (random.randrange(0,width), random.randrange(0,height))
         self.startPos = self.pos
         self.moveTime = 5
-        self.startTime = 0;
+        self.startTime = 0
         self.width = width
         self.height = height
         self.grid = grid.grid(self.width, self.height, 250)
         self.history = textDisplay.textDisplay((10, 10), 230, 480)
         self.updatePosText()
-        pass
 
     def draw(self, surface):
         self.grid.draw(surface, self.colour);
@@ -33,11 +32,9 @@ class overlay:
         pygame.draw.line(surface, self.colour, (self.pos[0] - 10, self.pos[1] + 10), (self.pos[0] - 18, self.pos[1] + 18))
         
         self.history.draw(surface, self.colour)
-        pass
 
     def updatePosText(self):
         self.history.updateCurrentText(''.join((str(self.pos[0]/10.0), ', ', str(self.pos[1]/10.0))), self.colour)
-        pass
 
     def pickNewColour(self):
         red = random.randrange(10,255)
@@ -69,7 +66,6 @@ class overlay:
                 yPos = self.startPos[1] + ((self.targetPos[1] - self.startPos[1]) * timeOffset)
                 self.colour = self.tweenColours(self.startColour, self.targetColour, timeOffset)
                 self.pos = (int(round(xPos)), int(round(yPos)))
-        pass
 
     def targetReached(self, updateTime):
         self.pos = self.targetPos
@@ -80,7 +76,6 @@ class overlay:
         self.startColour = self.targetColour
         self.targetColour = self.pickNewColour()
         self.history.updateHistory()
-        pass
 
     def tweenColours(self, startColour, endColour, progress):
         return (int(round((startColour[0] + ((endColour[0] - startColour[0]) * progress)))),int(round((startColour[1] + ((endColour[1] - startColour[1]) * progress)))),int(round((startColour[2] + ((endColour[2] - startColour[2]) * progress)))))

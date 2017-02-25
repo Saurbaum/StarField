@@ -4,7 +4,6 @@ class button:
     def __init__(self, pos, coordinates):
         self.pos = pos
         self.coordinates = coordinates
-        pass
 
     def isPointWithin(self, point):
         n = len(self.coordinates)
@@ -28,4 +27,3 @@ class button:
     def draw(self, surface, colour):
         pygame.draw.polygon(surface, colour, self.coordinates)
         pygame.draw.polygon(surface, colour, self.coordinates, 1)
-        pass
