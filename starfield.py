@@ -3,35 +3,28 @@ import time
 from collections import deque
 import pygame
 from pygame.locals import *
-import overlay
-import stars
+import starfieldScanner
 import ctypes
 
 class App:
     def __init__(self):
         self._running = True
         self._display_surf = None
-        
-    def drawOverlay(self):
-        self.overlay.draw(self._display_surf)
 
-    def drawStarfield(self):
-        self.stars.draw(self._display_surf)
-        
     def on_init(self):
         pygame.init()
         pygame.mouse.set_visible(False)
 
         if sys.platform.startswith("win32"):
-            user32 = ctypes.windll.user32
-            user32.SetProcessDPIAware()
+            ctypes.windll.user32.SetProcessDPIAware()
+
+        self.now = time.time()
 
         width, height = pygame.display.Info().current_w, pygame.display.Info().current_h
         self._display_surf = pygame.display.set_mode((width, height), pygame.FULLSCREEN | pygame.HWSURFACE | pygame.DOUBLEBUF)
         self._running = True
-        self.now = time.time()
-        self.overlay = overlay.overlay(width, height)
-        self.stars = stars.stars(width, height)
+
+        self.starfieldScanner = starfieldScanner.starfieldScanner(width, height, self._display_surf)
 
     def on_event(self, event):
         if event.type == pygame.QUIT:
@@ -39,20 +32,15 @@ class App:
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_ESCAPE:
                 self._running = False
-            if event.key == pygame.K_SPACE:
-                self.stars.updateStarfield()
+            else:
+                self.starfieldScanner.keyPress(event.key)
     
     def on_loop(self):
-        if time.time() >= self.now + 0.5:
-            self.stars.updateStarfield()
-            self.now = time.time()
-
-        self.overlay.update(time.time())
-
+        self.starfieldScanner.on_loop(time.time())
+ 
     def on_render(self):
         self._display_surf.fill((0,0,0))
-        self.drawStarfield()
-        self.drawOverlay()
+        self.starfieldScanner.on_render()
         pygame.display.update()
 
     def on_cleanup(self):
