@@ -19,10 +19,11 @@ class radar:
         self.colour = (0,128,0)
 
         self.startTime = time.time()
-        self.moveTime = 5
+        self.moveTime = 3
 
-        self.rotationSpeed = 45.0
+        self.rotationSpeed = 360.0
         self.startAngle = 0.0
+        self.currentAngle = self.startAngle
         self.targetAngle = self.startAngle + self.rotationSpeed
         
         self.armLength = int((maxSpace * 0.96) / 2)
@@ -34,23 +35,22 @@ class radar:
         self.now = time.time()
 
     def drawBackground(self, surface):
-        surface.fill((12,64,12))
+        surface.fill((0,32,0))
 
     def drawOverlay(self, surface):
-        pygame.draw.circle(surface, self.colour, self.centre, self.radius, 1)
-        pygame.draw.line(surface, self.colour, self.centre, self.armPoint)
+        pygame.draw.circle(surface, self.colour, self.centre, self.radius, 3)
+        pygame.draw.line(surface, self.colour, self.centre, self.armPoint, 3)
 
     def on_loop(self, updateTime):
         progress = (updateTime - self.startTime) / self.moveTime
 
+        self.progressSweep(progress)
+
         if progress >= 1.0:
-            self.progressSweep(1.0)
             self.targetReached(updateTime)
-        else:
-            self.progressSweep(progress)
 
     def targetReached(self, updateTime):
-        self.startAngle = self.targetAngle
+        self.startAngle = self.currentAngle
         self.targetAngle = self.startAngle + self.rotationSpeed
 
         if self.targetAngle > 360.0 and self.startAngle > 360.0:
@@ -72,7 +72,8 @@ class radar:
 
     def progressSweep(self, progress):
         angle = self.startAngle + ((self.targetAngle - self.startAngle) * progress)
-        self.armPoint = self.rotatePoint(self.centre, angle, self.startPoint)
+        self.currentAngle = angle
+        self.armPoint = self.rotatePoint(self.centre, self.currentAngle, self.startPoint)
     
     def rotatePoint(self, offset, angle, point):
         s = math.sin(math.radians(angle))
