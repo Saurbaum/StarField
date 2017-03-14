@@ -2,6 +2,7 @@ import pygame
 import random
 import grid
 import textDisplay
+import math
 
 class overlay:
     def __init__(self, width, height):
@@ -16,7 +17,10 @@ class overlay:
         self.startTime = 0
         self.width = width
         self.height = height
-        self.grid = grid.grid(self.width, self.height, 80)
+
+        step = math.gcd(self.width, self.height) // 2
+
+        self.grid = grid.grid(self.width, self.height, step)
         self.history = textDisplay.textDisplay((10, 10), 230, 480)
         self.updatePosText()
 
