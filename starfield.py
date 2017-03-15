@@ -1,5 +1,4 @@
 import sys
-import time
 from collections import deque
 import pygame
 from pygame.locals import *
@@ -12,6 +11,7 @@ class App:
         self._running = True
         self._display_surf = None
         self.activeDisplay = None
+        self.clock = pygame.time.Clock()
 
     def on_init(self):
         pygame.init()
@@ -20,7 +20,7 @@ class App:
         if sys.platform.startswith("win32"):
             ctypes.windll.user32.SetProcessDPIAware()
 
-        self.now = time.time()
+        self.now = 0
 
         width, height = pygame.display.Info().current_w, pygame.display.Info().current_h
         self._display_surf = pygame.display.set_mode((width, height), pygame.FULLSCREEN | pygame.HWSURFACE | pygame.DOUBLEBUF)
@@ -44,8 +44,9 @@ class App:
                 self.activeDisplay.keyPress(event.key)
     
     def on_loop(self):
-        self.starfieldScanner.on_loop(time.time())
-        self.radar.on_loop(time.time())
+        self.now += self.clock.get_rawtime() / 1000
+        self.starfieldScanner.on_loop(self.now)
+        self.radar.on_loop(self.now)
  
     def on_render(self):
         self.activeDisplay.on_render()
@@ -62,6 +63,8 @@ class App:
                 self.on_event(event)
             self.on_loop()
             self.on_render()
+            self.clock.tick(60)
+
         self.on_cleanup()
 
 if __name__ == "__main__" :
