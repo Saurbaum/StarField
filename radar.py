@@ -19,16 +19,16 @@ class radar:
         self.colour = (0,128,0)
 
         self.startTime = time.time()
-        self.moveTime = 3
+        self.moveTime = 5
 
         self.rotationSpeed = 360.0
         self.startAngle = 0.0
         self.currentAngle = self.startAngle
         self.targetAngle = self.startAngle + self.rotationSpeed
         
-        self.armLength = int((maxSpace * 0.96) / 2)
         self.radius = int((maxSpace * 0.95) / 2)
-
+        self.armLength = self.radius
+        
         self.armPoint = (self.centre[0], self.centre[1] - self.armLength)
         self.startPoint = self.armPoint
 
