@@ -4,12 +4,13 @@ from collections import deque
 
 class textDisplay:
     def __init__(self, pos, width, height):
+        self.borderOverlap = 5
         self.pos = pos
-        self.borderPos = (pos[0] - 5, pos[1] - 5)
+        self.borderPos = (pos[0] - self.borderOverlap, pos[1] - self.borderOverlap)
         self.width = width
-        self.borderWidth = width + 5
+        self.borderWidth = width
         self.height = height
-        self.borderHeight = height + 5
+        self.borderHeight = height
         freetype.init()
         self.font = freetype.SysFont("Ariel", 24)
         self.currentText = ''
@@ -18,12 +19,13 @@ class textDisplay:
         self.textSize = 24
 
     def drawBorder(self, surface, colour):
-        background = pygame.Surface((self.borderWidth, self.borderHeight), pygame.HWSURFACE)
+        background = pygame.Surface((self.width, self.height), pygame.HWSURFACE)
         background.set_alpha(220)
         background.fill((colour[0]/5, colour[1]/5, colour[2]/5))
-        surface.blit(background, self.borderPos)
 
-        pygame.draw.rect(surface, colour, (self.borderPos[0], self.borderPos[1], self.borderPos[0] + self.borderWidth, self.borderPos[1] + self.borderHeight), 2)
+        pygame.draw.rect(background, colour, (0, 0, self.width, self.height), 1)
+
+        surface.blit(background, self.borderPos)
 
     def draw(self, surface, colour):
         self.drawBorder(surface, colour)
