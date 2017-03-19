@@ -6,13 +6,11 @@ class stars(object):
     def __init__(self, width, height):
         self.width = width
         self.height = height
-        random.seed(3)
-        self.stars = deque()
+        self.starSurface = pygame.Surface((width, height), pygame.HWSURFACE)
         self.updateStarfield()
 
     def draw(self, surface):
-        for star in self.stars:
-            pygame.draw.circle(surface, star[0], star[1], star[2], 0)
+        surface.blit(self.starSurface, (0,0))
         
     def pickColour(self):
         colour = random.randrange(0,5)
@@ -30,8 +28,6 @@ class stars(object):
 
 
     def updateStarfield(self):
-        tempDeque = deque()
+        self.starSurface.fill((0,0,0))
         for i in range(0, 40):
-            tempDeque.append((self.pickColour(), (random.randrange(0,self.width), random.randrange(0,self.height)), random.randrange(1,7,2)))
-        
-        self.stars = tempDeque
+            pygame.draw.circle(self.starSurface, self.pickColour(), (random.randrange(0,self.width), random.randrange(0,self.height)), random.randrange(1,7,2), 0)
