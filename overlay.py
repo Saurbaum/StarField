@@ -24,6 +24,8 @@ class overlay:
         self.history = textDisplay.textDisplay((10, 10), 230, 480)
         self.updatePosText()
 
+        self.now = 0
+
     def draw(self, surface):
         self.grid.draw(surface, self.colour);
 
@@ -57,25 +59,27 @@ class overlay:
         return (red, green, blue)
 
     def update(self, updateTime):
+        self.now += updateTime
+
         self.updatePosText()
 
         if self.pos == self.targetPos:
-            self.targetReached(updateTime)
+            self.targetReached(self.now)
         else:
-            if updateTime > self.startTime + self.moveTime:
-                self.targetReached(updateTime)
+            if self.now > self.startTime + self.moveTime:
+                self.targetReached(self.now)
             else:
-                timeOffset = (updateTime - self.startTime) / self.moveTime
+                timeOffset = (self.now - self.startTime) / self.moveTime
                 xPos = self.startPos[0] + ((self.targetPos[0] - self.startPos[0]) * timeOffset)
                 yPos = self.startPos[1] + ((self.targetPos[1] - self.startPos[1]) * timeOffset)
                 self.colour = self.tweenColours(self.startColour, self.targetColour, timeOffset)
                 self.pos = (int(round(xPos)), int(round(yPos)))
 
     def targetReached(self, updateTime):
+        self.now = 0
         self.pos = self.targetPos
         self.startPos = self.targetPos
         self.targetPos = (random.randrange(0, self.width), random.randrange(0, self.height))
-        self.startTime = updateTime
         self.moveTime = random.randrange(2, 5)
         self.startColour = self.targetColour
         self.targetColour = self.pickNewColour()

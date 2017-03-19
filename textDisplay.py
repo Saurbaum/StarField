@@ -17,6 +17,7 @@ class textDisplay:
         self.currentColour = (0, 0, 0)
         self.history = deque()
         self.textSize = 24
+        self.textSpace = 25
 
     def drawBorder(self, surface, colour):
         background = pygame.Surface((self.width, self.height), pygame.HWSURFACE)
@@ -32,7 +33,7 @@ class textDisplay:
         self.font.render_to(surface, self.pos, self.currentText, colour, None, 0, 0, self.textSize)
         index = len(self.history)
         for entry in self.history:
-            self.font.render_to(surface, (self.pos[0], self.pos[1] + (index * self.textSize)), entry[0], entry[1], None, 0, 0, self.textSize)
+            self.font.render_to(surface, (self.pos[0], self.pos[1] + (index * self.textSpace)), entry[0], entry[1], None, 0, 0, self.textSize)
             index = index - 1
 
     def updateCurrentText(self, text, colour):
@@ -41,5 +42,5 @@ class textDisplay:
 
     def updateHistory(self):
         self.history.append((self.currentText, self.currentColour))
-        if (len(self.history)) * self.textSize > self.height:
+        if (len(self.history) + 1) * self.textSpace > self.height:
             self.history.popleft()

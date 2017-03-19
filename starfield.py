@@ -44,7 +44,7 @@ class App:
                 self.activeDisplay.keyPress(event.key)
     
     def on_loop(self):
-        self.now += self.clock.get_rawtime() / 1000
+        self.now = self.clock.get_rawtime() / 1000
         self.starfieldScanner.on_loop(self.now)
         self.radar.on_loop(self.now)
  

@@ -17,7 +17,7 @@ class radar:
 
         self.colour = (0,128,0)
 
-        self.startTime = 0
+        self.now = 0
         self.moveTime = 5
 
         self.rotationSpeed = 360.0
@@ -69,7 +69,8 @@ class radar:
         pygame.draw.line(surface, self.colour, self.centre, self.armPoint, 3)
 
     def on_loop(self, updateTime):
-        progress = (updateTime - self.startTime) / self.moveTime
+        self.now += updateTime
+        progress = self.now / self.moveTime
 
         self.progressSweep(progress)
 
@@ -77,14 +78,13 @@ class radar:
             self.targetReached(updateTime)
 
     def targetReached(self, updateTime):
+        self.now = 0
         self.startAngle = self.currentAngle
         self.targetAngle = self.startAngle + self.rotationSpeed
 
         if self.targetAngle > 360.0 and self.startAngle > 360.0:
             self.targetAngle -= 360.0
             self.startAngle -= 360.0
-
-        self.startTime = updateTime
 
     def on_render(self):
         self.drawBackground(self._display_surf)

@@ -1,5 +1,4 @@
 import sys
-import time
 from collections import deque
 import pygame
 from pygame.locals import *
@@ -13,7 +12,8 @@ class starfieldScanner:
         self._display_surf = displaySurface
         self.overlay = overlay.overlay(width, height)
         self.stars = stars.stars(width, height)
-        self.now = time.time()
+        self.now = 0
+        self.regenerateStarsTrigger = 1
 
     def drawOverlay(self):
         self.overlay.draw(self._display_surf)
@@ -22,9 +22,10 @@ class starfieldScanner:
         self.stars.draw(self._display_surf)
          
     def on_loop(self, updateTime):
-        if updateTime >= self.now + 0.5:
+        self.now += updateTime
+        if self.now >= self.regenerateStarsTrigger:
             self.stars.updateStarfield()
-            self.now = updateTime
+            self.now -= self.regenerateStarsTrigger
 
         self.overlay.update(updateTime)
 
