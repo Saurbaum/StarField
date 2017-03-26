@@ -5,12 +5,32 @@ from pygame.locals import *
 
 class forwardSweep:   
     def __init__(self, width, height, displaySurface):
-    	self._display_surf = displaySurface
-    	self.now = 0
-    	self.moveTime = 3
-    	self.startAngle = 0
-    	self.currentAngle = self.startAngle
-    	self.rotationSpeed = 1
+        self._display_surf = displaySurface
+
+        self.centre = (width//2, height//2)
+
+        maxSpace = min(width, height)
+
+        self.colour = (0,128,0)
+
+        self.now = 0
+        self.moveTime = 3
+        self.startAngle = 0
+        self.currentAngle = self.startAngle
+        self.rotationSpeed = 1
+
+        self.radius = int(maxSpace * 0.95)
+        self.armLength = self.radius
+        
+        self.armStartPoint = (self.centre[0], int(height*0.98)) 
+        self.armPoint = (self.centre[0], self.armStartPoint[1] - self.armLength)
+        self.startPoint = self.armPoint
+
+        self.overLaySurface = pygame.Surface((width, height), pygame.HWSURFACE)
+        self.prepareOverlay()
+
+    def prepareOverlay(self):
+        self.overLaySurface.fill((0,0,0))
 
     def on_loop(self, updateTime):
         self.now += updateTime
@@ -20,6 +40,9 @@ class forwardSweep:
 
         if progress >= 1.0:
             self.targetReached(updateTime)
+
+    def progressSweep(self, progress):
+        pass
 
     def targetReached(self, updateTime):
         self.now = 0
@@ -31,10 +54,12 @@ class forwardSweep:
             self.startAngle -= 360.0
 
     def drawBackground(self, surface):
-        pass
+        surface.fill((128,128,0))
 
     def drawOverlay(self, surface):
-        pass 
+        #surface.blit(self.overLaySurface, (0,0))
+        pygame.draw.line(surface, self.colour, self.armStartPoint, self.armPoint, 3)
+
 
     def on_render(self):
         self.drawBackground(self._display_surf)
