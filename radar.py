@@ -1,4 +1,4 @@
-import math
+from rotation import *
 from collections import deque
 import pygame
 from pygame.locals import *
@@ -53,8 +53,8 @@ class radar:
 
 
     def createTicks(self, referencePos, ticks, angle):
-        first = self.rotatePoint(self.centre, angle, referencePos[0])
-        second = self.rotatePoint(self.centre, angle, referencePos[1])
+        first = rotatePoint(self.centre, angle, referencePos[0])
+        second = rotatePoint(self.centre, angle, referencePos[1])
         ticks.append((first, second))
 
     def drawBackground(self, surface):
@@ -96,20 +96,4 @@ class radar:
     def progressSweep(self, progress):
         angle = self.startAngle + ((self.targetAngle - self.startAngle) * progress)
         self.currentAngle = angle
-        self.armPoint = self.rotatePoint(self.centre, self.currentAngle, self.startPoint)
-    
-    def rotatePoint(self, offset, angle, point):
-        s = math.sin(math.radians(angle))
-        c = math.cos(math.radians(angle))
-
-        # Translate point back to origin:
-        x = point[0] - offset[0]
-        y = point[1] - offset[1]
-
-        # Rotate point
-        xNew = x * c - y * s
-        yNew = x * s + y * c
-
-        # Translate point back:
-        return (xNew + offset[0], yNew + offset[1]);
-
+        self.armPoint = rotatePoint(self.centre, self.currentAngle, self.startPoint)
