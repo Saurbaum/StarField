@@ -1,11 +1,7 @@
-import sys
 import math
 from collections import deque
 import pygame
 from pygame.locals import *
-import overlay
-import stars
-import ctypes
 
 class radar:   
     def __init__(self, width, height, displaySurface):
