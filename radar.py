@@ -30,10 +30,12 @@ class radar:
         self.majorTicks = deque()
         self.minorTicks = deque()
 
-        self.overLaySurface = pygame.Surface((width, height), pygame.HWSURFACE)
+        self.overLaySurface = pygame.Surface((width, height), pygame.HWSURFACE | pygame.SRCALPHA)
         self.prepareOverlay()
 
     def prepareOverlay(self):
+        self.overLaySurface.fill((0,28,0,0))
+
         self.majorTickReference = ((self.centre[0], self.centre[1] + (self.radius + 6)),(self.centre[0], self.centre[1] + (self.radius - 6)))
         majorTickAngle = 45
         for i in range(0, 360//majorTickAngle):
@@ -68,10 +70,11 @@ class radar:
         self.now += updateTime
         progress = self.now / self.moveTime
 
-        self.progressSweep(progress)
-
         if progress >= 1.0:
+            self.progressSweep(1.0)
             self.targetReached(updateTime)
+        else:
+            self.progressSweep(progress)
 
     def targetReached(self, updateTime):
         self.now = 0

@@ -12,13 +12,12 @@ class forwardSweep:
 
         self.maxSpace = min(width, height)
 
-        self.colour = (0,128,0)
+        self.colour = (0,255,0)
+        self.armColour = (0,128,0)
 
         self.now = 0
-        self.moveTime = 3
+        self.moveTime = 5
         self.startAngle = 0
-        self.currentAngle = self.startAngle
-        self.rotationSpeed = 1
 
         self.radius = int(self.maxSpace * 0.95)
         self.armLength = self.radius
@@ -29,8 +28,12 @@ class forwardSweep:
 
         self.maxAngle = 0;
 
-        self.overLaySurface = pygame.Surface((width, height), pygame.HWSURFACE)
+        self.overLaySurface = pygame.Surface((width, height), pygame.HWSURFACE | pygame.SRCALPHA)
         self.prepareOverlay()
+
+        self.startAngle = -self.maxAngle
+        self.currentAngle = self.startAngle
+        self.targetAngle = self.maxAngle
 
     def prepareOverlay(self):
         width = self.centre[0]*2
@@ -40,37 +43,38 @@ class forwardSweep:
             if testPoint[0] < (width * 0.99) :
                 self.maxAngle = angle
 
+        self.overLaySurface.fill((0,28,0,0))
         pygame.draw.line(self.overLaySurface, self.colour, self.armStartPoint, rotatePoint(self.armStartPoint, self.maxAngle, self.armPoint), 1)
         pygame.draw.line(self.overLaySurface, self.colour, self.armStartPoint, rotatePoint(self.armStartPoint, -self.maxAngle, self.armPoint), 1)
-
 
     def on_loop(self, updateTime):
         self.now += updateTime
         progress = self.now / self.moveTime
 
-        self.progressSweep(progress)
-
         if progress >= 1.0:
+            self.progressSweep(1.0)
             self.targetReached(updateTime)
+        else:
+            self.progressSweep(progress)
+
 
     def progressSweep(self, progress):
-        pass
+        angle = self.startAngle + ((self.targetAngle - self.startAngle) * progress)
+        self.currentAngle = angle
+
+        self.armPoint = rotatePoint(self.armStartPoint, self.currentAngle, self.startPoint)
 
     def targetReached(self, updateTime):
         self.now = 0
         self.startAngle = self.currentAngle
-        self.targetAngle = self.startAngle + self.rotationSpeed
-
-        if self.targetAngle > 360.0 and self.startAngle > 360.0:
-            self.targetAngle -= 360.0
-            self.startAngle -= 360.0
+        self.targetAngle = self.startAngle * -1
 
     def drawBackground(self, surface):
-        surface.fill((128,128,0))
+        surface.fill((0,32,0))
 
     def drawOverlay(self, surface):
         surface.blit(self.overLaySurface, (0,0))
-        pygame.draw.line(surface, self.colour, self.armStartPoint, self.armPoint, 3)
+        pygame.draw.line(surface, self.armColour, self.armStartPoint, self.armPoint, 3)
 
 
     def on_render(self):
