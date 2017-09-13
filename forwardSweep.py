@@ -76,6 +76,10 @@ class forwardSweep:
         surface.blit(self.overLaySurface, (0,0))
         pygame.draw.line(surface, self.armColour, self.armStartPoint, self.armPoint, 3)
 
+    def keyPress(self, key):
+        if key == pygame.K_SPACE:
+            # Any nessesary action here
+            pass
 
     def on_render(self):
         self.drawBackground(self._display_surf)
