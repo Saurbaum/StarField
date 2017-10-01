@@ -1,10 +1,8 @@
 import sys
-from collections import deque
 import pygame
 from pygame.locals import *
 import overlay
 import stars
-import ctypes
 
 class starfieldScanner:   
     def __init__(self, width, height, displaySurface):
@@ -27,7 +25,7 @@ class starfieldScanner:
             self.stars.updateStarfield()
             self.now -= self.regenerateStarsTrigger
 
-        self.overlay.update(updateTime)
+        self.overlay.on_loop(updateTime)
 
     def on_render(self):
         self._display_surf.fill((0,0,0))

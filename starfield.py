@@ -5,6 +5,7 @@ from pygame.locals import *
 import starfieldScanner
 import radar
 import forwardSweep
+import blip
 import ctypes
 
 class App:
@@ -27,8 +28,10 @@ class App:
         self._display_surf = pygame.display.set_mode((width, height), pygame.FULLSCREEN | pygame.HWSURFACE | pygame.DOUBLEBUF)
         self._running = True
 
+        self.blip = blip.blip(width, height)
+
         self.starfieldScanner = starfieldScanner.starfieldScanner(width, height, self._display_surf)
-        self.radar = radar.radar(width, height, self._display_surf)
+        self.radar = radar.radar(width, height, self._display_surf, self.blip)
         self.forwardSweep = forwardSweep.forwardSweep(width, height, self._display_surf)
         self.activeDisplay = self.starfieldScanner
 
@@ -52,6 +55,7 @@ class App:
         self.starfieldScanner.on_loop(self.now)
         self.radar.on_loop(self.now)
         self.forwardSweep.on_loop(self.now)
+        self.blip.on_loop(self.now)
  
     def on_render(self):
         self.activeDisplay.on_render()

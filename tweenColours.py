@@ -1,0 +1,2 @@
+def tweenColours(startColour, endColour, progress):
+		return (int(round((startColour[0] + ((endColour[0] - startColour[0]) * progress)))),int(round((startColour[1] + ((endColour[1] - startColour[1]) * progress)))),int(round((startColour[2] + ((endColour[2] - startColour[2]) * progress)))))
