@@ -38,7 +38,7 @@ class radar:
 		self.blip = blip
 
 	def prepareOverlay(self):
-		self.overLaySurface.fill((0,28,0,0))
+		self.overLaySurface.fill((0,28,0))
 
 		self.majorTickReference = ((self.centre[0], self.centre[1] + (self.radius + 6)),(self.centre[0], self.centre[1] + (self.radius - 6)))
 		majorTickAngle = 45
@@ -50,13 +50,14 @@ class radar:
 		for i in range(0, int(360/minorTickAngle)):
 			self.createTicks(self.minorTickReference, self.minorTicks, i*minorTickAngle)
 
+		pygame.draw.circle(self.overLaySurface, (0, 0 ,0, 0), self.centre, self.radius, 0)
+
 		pygame.draw.circle(self.overLaySurface, self.colour, self.centre, self.radius, 3)
 		for tick in self.majorTicks:
 			pygame.draw.line(self.overLaySurface, self.colour, tick[0], tick[1], 3)
 
 		for tick in self.minorTicks:
 			pygame.draw.line(self.overLaySurface, self.colour, tick[0], tick[1], 1)
-
 
 	def createTicks(self, referencePos, ticks, angle):
 		first = rotatePoint(self.centre, angle, referencePos[0])
