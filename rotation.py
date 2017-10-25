@@ -14,3 +14,11 @@ def rotatePoint(offset, angle, point):
 
     # Translate point back:
     return (xNew + offset[0], yNew + offset[1]);
+
+def getAngle(x, y):
+    angle = math.degrees(math.atan2(y, x))
+
+    if angle < 0:
+        angle += 360
+
+    return angle

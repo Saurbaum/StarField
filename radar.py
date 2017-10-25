@@ -3,6 +3,7 @@ from collections import deque
 import pygame
 from pygame.locals import *
 from tweenColours import *
+import textDisplay
 
 class radar:   
 	def __init__(self, width, height, displaySurface, blip):
@@ -36,6 +37,9 @@ class radar:
 		self.prepareOverlay()
 
 		self.blip = blip
+		self.blipRenderPos = (self.blip.pos[0], self.blip.pos[1])
+
+		self.history = textDisplay.textDisplay((10, 10), 230, 480)
 
 	def prepareOverlay(self):
 		self.overLaySurface.fill((0,28,0))
@@ -71,7 +75,8 @@ class radar:
 		for size in range(self.blip.strength):
 			value = self.blip.strength - size
 			timeOffset = (value) / self.blip.strength
-			pygame.draw.circle(surface, tweenColours(self.colour, self.backgroundColour, timeOffset), self.blip.pos, value)
+			pygame.draw.circle(surface, tweenColours((128,0,0), self.backgroundColour, timeOffset), self.blip.pos, value)
+			pygame.draw.circle(surface, tweenColours(self.colour, self.backgroundColour, timeOffset), self.blipRenderPos, value)
 
 	def drawOverlay(self, surface):
 		surface.blit(self.overLaySurface, (0,0))
@@ -100,6 +105,8 @@ class radar:
 		self.drawBackground(self._display_surf)
 		self.drawBlip(self._display_surf)
 		self.drawOverlay(self._display_surf)   
+
+		self.history.draw(self._display_surf, self.colour)
 		
 		pygame.display.update()
 
@@ -110,5 +117,18 @@ class radar:
 
 	def progressSweep(self, progress):
 		angle = self.startAngle + ((self.targetAngle - self.startAngle) * progress)
+
+		if angle > 360:
+			angle -= 360
+
+		blipAngle = getAngle(self.centre[1] - self.blip.pos[1], self.blip.pos[0] - self.centre[0])
+
+		blipDistance = math.sqrt((self.centre[1] - self.blip.pos[1]) ** 2 + (self.blip.pos[0] - self.centre[0])**2) 
+
+		if (blipAngle > self.startAngle and blipAngle <= angle) and (self.radius > blipDistance):
+			self.blipRenderPos = (self.blip.pos[0], self.blip.pos[1])
+
+		self.history.updateCurrentText(str(angle), self.colour)
+
 		self.currentAngle = angle
 		self.armPoint = rotatePoint(self.centre, self.currentAngle, self.startPoint)
