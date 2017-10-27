@@ -86,3 +86,6 @@ class forwardSweep:
         self.drawOverlay(self._display_surf)       
         
         pygame.display.update()
+
+    def keyPress(self, key):
+        pass
