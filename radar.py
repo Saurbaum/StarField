@@ -22,6 +22,7 @@ class radar:
 		self.rotationSpeed = 360.0
 		self.startAngle = 0.0
 		self.currentAngle = self.startAngle
+		self.lastAngle = self.currentAngle
 		self.targetAngle = self.startAngle + self.rotationSpeed
 		
 		self.radius = int((maxSpace * 0.95) / 2)
@@ -125,10 +126,11 @@ class radar:
 
 		blipDistance = math.sqrt((self.centre[1] - self.blip.pos[1]) ** 2 + (self.blip.pos[0] - self.centre[0])**2) 
 
-		if (blipAngle > self.startAngle and blipAngle <= angle) and (self.radius > blipDistance):
+		if (angle >= blipAngle > self.lastAngle) and (self.radius > blipDistance):
 			self.blipRenderPos = (self.blip.pos[0], self.blip.pos[1])
 
-		self.history.updateCurrentText(str(angle), self.colour)
+		self.history.updateCurrentText(str(angle) + " " + str(angle) + " " + str(self.lastAngle), self.colour)
 
 		self.currentAngle = angle
+		self.lastAngle = self.currentAngle
 		self.armPoint = rotatePoint(self.centre, self.currentAngle, self.startPoint)
