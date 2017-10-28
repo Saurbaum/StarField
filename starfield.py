@@ -67,7 +67,7 @@ class App:
     def on_execute(self):
         self.on_init()
 
-        while( self._running ):
+        while(self._running):
             for event in pygame.event.get():
                 self.on_event(event)
             self.on_loop()

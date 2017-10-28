@@ -3,7 +3,6 @@ from collections import deque
 import pygame
 from pygame.locals import *
 from tweenColours import *
-import textDisplay
 
 class radar:   
 	def __init__(self, width, height, displaySurface, blip):
@@ -15,6 +14,8 @@ class radar:
 
 		self.colour = (0,128,0)
 		self.backgroundColour = (0,28,0)
+
+		self.updateTime = 0
 
 		self.now = 0
 		self.moveTime = 5
@@ -38,9 +39,9 @@ class radar:
 		self.prepareOverlay()
 
 		self.blip = blip
-		self.blipRenderPos = (self.blip.pos[0], self.blip.pos[1])
-
-		self.history = textDisplay.textDisplay((10, 10), 230, 480)
+		self.blipRenderPos = (0, 0)
+		self.blipFadeTime = 4.8
+		self.blipStartTime = -1
 
 	def prepareOverlay(self):
 		self.overLaySurface.fill((0,28,0))
@@ -73,10 +74,20 @@ class radar:
 		surface.fill(self.backgroundColour)
 
 	def drawBlip(self, surface):
-		for size in range(self.blip.strength):
+		if self.blipStartTime == -1:
+			return
+
+		progress = (self.updateTime - self.blipStartTime) / self.blipFadeTime
+
+		if progress >= 1.0 or progress < 0:
+			self.blipStartTime = -1
+			return
+
+		steps = int(self.blip.strength * (1 - progress))
+
+		for size in range(steps):
 			value = self.blip.strength - size
 			timeOffset = (value) / self.blip.strength
-			pygame.draw.circle(surface, tweenColours((128,0,0), self.backgroundColour, timeOffset), self.blip.pos, value)
 			pygame.draw.circle(surface, tweenColours(self.colour, self.backgroundColour, timeOffset), self.blipRenderPos, value)
 
 	def drawOverlay(self, surface):
@@ -84,6 +95,7 @@ class radar:
 		pygame.draw.line(surface, self.colour, self.centre, self.armPoint, 3)
 
 	def on_loop(self, updateTime):
+		self.updateTime += updateTime
 		self.now += updateTime
 		progress = self.now / self.moveTime
 
@@ -96,19 +108,17 @@ class radar:
 	def targetReached(self, updateTime):
 		self.now = 0
 		self.startAngle = self.currentAngle
-		self.targetAngle = self.startAngle + self.rotationSpeed
 
-		if self.targetAngle > 360.0 and self.startAngle > 360.0:
-			self.targetAngle -= 360.0
+		if self.startAngle > 360.0:
 			self.startAngle -= 360.0
+
+		self.targetAngle = self.startAngle + self.rotationSpeed
 
 	def on_render(self):
 		self.drawBackground(self._display_surf)
 		self.drawBlip(self._display_surf)
 		self.drawOverlay(self._display_surf)   
 
-		self.history.draw(self._display_surf, self.colour)
-		
 		pygame.display.update()
 
 	def keyPress(self, key):
@@ -128,8 +138,7 @@ class radar:
 
 		if (angle >= blipAngle > self.lastAngle) and (self.radius > blipDistance):
 			self.blipRenderPos = (self.blip.pos[0], self.blip.pos[1])
-
-		self.history.updateCurrentText(str(angle) + " " + str(angle) + " " + str(self.lastAngle), self.colour)
+			self.blipStartTime = self.updateTime
 
 		self.currentAngle = angle
 		self.lastAngle = self.currentAngle
