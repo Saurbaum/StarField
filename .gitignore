@@ -1,3 +1,4 @@
 *.pyc
 
 Starfield\.sublime-workspace
+.vscode/settings.json
