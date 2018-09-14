@@ -13,11 +13,11 @@ class grid:
 
         pos = self.step
         
-        for i in range(self.horizontalSteps):
+        for _i in range(self.horizontalSteps):
             pygame.draw.line(surface, colour, (pos, 0), (pos, self.height))        
             pos += self.step
 
         pos = self.step
-        for i in range(self.verticalSteps):
+        for _i in range(self.verticalSteps):
             pygame.draw.line(surface, colour, (0, pos), (self.width, pos))
             pos += self.step
