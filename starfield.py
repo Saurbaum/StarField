@@ -28,7 +28,7 @@ class App:
             (width, height), pygame.FULLSCREEN | pygame.HWSURFACE | pygame.DOUBLEBUF)
         self._running = True
 
-        self.blip = blip.blip(width, height)
+        self.blip = blip.Blip(width, height)
 
         self.starfield_scanner = starfieldScanner.starfieldScanner(
             width, height, self._display_surf)
