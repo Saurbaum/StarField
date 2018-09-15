@@ -1,21 +1,25 @@
+"""Rotation library"""
+
 import math
 
-def rotatePoint(offset, angle, point):
-    s = math.sin(math.radians(angle))
-    c = math.cos(math.radians(angle))
+def rotate_point(offset, angle, point):
+    """Rotate a point around an origin"""
+    sin = math.sin(math.radians(angle))
+    cos = math.cos(math.radians(angle))
 
     # Translate point back to origin:
-    x = point[0] - offset[0]
-    y = point[1] - offset[1]
+    x_origin = point[0] - offset[0]
+    y_origin = point[1] - offset[1]
 
     # Rotate point
-    xNew = x * c - y * s
-    yNew = x * s + y * c
+    x_new = x_origin * cos - y_origin * sin
+    y_new = x_origin * sin + y_origin * cos
 
     # Translate point back:
-    return (xNew + offset[0], yNew + offset[1]);
+    return (x_new + offset[0], y_new + offset[1])
 
-def getAngle(x, y):
+def get_angle(x, y):
+    """Get the angle between 2 points"""
     angle = math.degrees(math.atan2(y, x))
 
     if angle < 0:

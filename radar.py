@@ -1,10 +1,12 @@
-from rotation import *
+"""A spinning radar display"""
+
+from rotation import rotate_point, get_angle
 from collections import deque
 import pygame
-from pygame.locals import *
-from tweenColours import *
+import math
+from tweenColours import tweenColours
 
-class radar:   
+class radar:
     def __init__(self, width, height, displaySurface, blip):
         self.rendering = True
         self._display_surf = displaySurface
@@ -25,10 +27,10 @@ class radar:
         self.currentAngle = self.startAngle
         self.lastAngle = self.currentAngle
         self.targetAngle = self.startAngle + self.rotationSpeed
-        
+
         self.radius = int((maxSpace * 0.95) / 2)
         self.armLength = self.radius
-        
+
         self.armPoint = (self.centre[0], self.centre[1] - self.armLength)
         self.startPoint = self.armPoint
 
@@ -44,14 +46,18 @@ class radar:
         self.blipStartTime = -1
 
     def prepareOverlay(self):
-        self.overLaySurface.fill((0,28,0))
+        self.overLaySurface.fill((0, 28, 0))
 
-        self.majorTickReference = ((self.centre[0], self.centre[1] + (self.radius + 6)),(self.centre[0], self.centre[1] + (self.radius - 6)))
+        self.majorTickReference = (
+            (self.centre[0], self.centre[1] + (self.radius + 6)),
+            (self.centre[0], self.centre[1] + (self.radius - 6)))
         majorTickAngle = 45
         for i in range(0, 360//majorTickAngle):
             self.createTicks(self.majorTickReference, self.majorTicks, i*majorTickAngle)
 
-        self.minorTickReference = ((self.centre[0], self.centre[1] + (self.radius + 4)),(self.centre[0], self.centre[1] + (self.radius - 4)))
+        self.minorTickReference = (
+            (self.centre[0], self.centre[1] + (self.radius + 4)),
+            (self.centre[0], self.centre[1] + (self.radius - 4)))
         minorTickAngle = 11.25
         for i in range(0, int(360/minorTickAngle)):
             self.createTicks(self.minorTickReference, self.minorTicks, i*minorTickAngle)
@@ -66,8 +72,8 @@ class radar:
             pygame.draw.line(self.overLaySurface, self.colour, tick[0], tick[1], 1)
 
     def createTicks(self, referencePos, ticks, angle):
-        first = rotatePoint(self.centre, angle, referencePos[0])
-        second = rotatePoint(self.centre, angle, referencePos[1])
+        first = rotate_point(self.centre, angle, referencePos[0])
+        second = rotate_point(self.centre, angle, referencePos[1])
         ticks.append((first, second))
 
     def drawBackground(self, surface):
@@ -132,14 +138,15 @@ class radar:
         if angle > 360:
             angle -= 360
 
-        blipAngle = getAngle(self.centre[1] - self.blip.pos[1], self.blip.pos[0] - self.centre[0])
+        blip_angle = get_angle(self.centre[1] - self.blip.pos[1], self.blip.pos[0] - self.centre[0])
 
-        blipDistance = math.sqrt((self.centre[1] - self.blip.pos[1]) ** 2 + (self.blip.pos[0] - self.centre[0])**2) 
+        blip_distance = math.sqrt(
+            (self.centre[1] - self.blip.pos[1]) ** 2 + (self.blip.pos[0] - self.centre[0])**2) 
 
-        if (angle >= blipAngle > self.lastAngle) and (self.radius > blipDistance):
+        if (angle >= blip_angle > self.lastAngle) and (self.radius > blip_distance):
             self.blipRenderPos = (self.blip.pos[0], self.blip.pos[1])
             self.blipStartTime = self.updateTime
 
         self.currentAngle = angle
         self.lastAngle = self.currentAngle
-        self.armPoint = rotatePoint(self.centre, self.currentAngle, self.startPoint)
+        self.armPoint = rotate_point(self.centre, self.currentAngle, self.startPoint)

@@ -1,7 +1,7 @@
 """A forward facing radar display"""
 
 import pygame
-from rotation import rotatePoint
+from rotation import rotate_point
 
 class ForwardSweep:
     """A forward facing radar display"""
@@ -29,63 +29,70 @@ class ForwardSweep:
         self.max_angle = 0
 
         self.overlay_surface = pygame.Surface((width, height), pygame.HWSURFACE | pygame.SRCALPHA)
-        self.prepareOverlay()
+        self.prepare_overlay()
 
         self.start_angle = -self.max_angle
-        self.currentAngle = self.start_angle
-        self.targetAngle = self.max_angle
+        self.current_angle = self.start_angle
+        self.target_angle = self.max_angle
 
-    def prepareOverlay(self):
+    def prepare_overlay(self):
+        """Setup the overlay for the display"""
         width = self.centre[0]*2
 
         for angle in range(0, 90):
-            test_point = rotatePoint(self.arm_start_point, angle, self.arm_point)
+            test_point = rotate_point(self.arm_start_point, angle, self.arm_point)
             if test_point[0] < (width * 0.99):
                 self.max_angle = angle
 
         self.overlay_surface.fill((0, 28, 0, 0))
         pygame.draw.line(
-            self.overlay_surface, self.colour, self.arm_start_point, rotatePoint(
+            self.overlay_surface, self.colour, self.arm_start_point, rotate_point(
                 self.arm_start_point, self.max_angle, self.arm_point), 1)
         pygame.draw.line(
-            self.overlay_surface, self.colour, self.arm_start_point, rotatePoint(
+            self.overlay_surface, self.colour, self.arm_start_point, rotate_point(
                 self.arm_start_point, -self.max_angle, self.arm_point), 1)
 
     def on_loop(self, update_time):
+        """Main update loop"""
         self.now += update_time
         progress = self.now / self.move_time
 
         if progress >= 1.0:
-            self.progressSweep(1.0)
-            self.targetReached()
+            self.progress_sweep(1.0)
+            self.target_reached()
         else:
-            self.progressSweep(progress)
+            self.progress_sweep(progress)
 
-    def progressSweep(self, progress):
-        angle = self.start_angle + ((self.targetAngle - self.start_angle) * progress)
-        self.currentAngle = angle
+    def progress_sweep(self, progress):
+        """Update the sweep arm"""
+        angle = self.start_angle + ((self.target_angle - self.start_angle) * progress)
+        self.current_angle = angle
 
-        self.arm_point = rotatePoint(self.arm_start_point, self.currentAngle, self.start_point)
+        self.arm_point = rotate_point(self.arm_start_point, self.current_angle, self.start_point)
 
-    def targetReached(self):
+    def target_reached(self):
+        """Arm reached the target position"""
         self.now = 0
-        self.start_angle = self.currentAngle
-        self.targetAngle = self.start_angle * -1
+        self.start_angle = self.current_angle
+        self.target_angle = self.start_angle * -1
 
-    def drawBackground(self, surface):
+    def draw_background(self, surface):
+        """Draw the background"""
         surface.fill((0, 32, 0))
 
-    def drawOverlay(self, surface):
+    def draw_overlay(self, surface):
+        """Draw overlay"""
         surface.blit(self.overlay_surface, (0, 0))
         pygame.draw.line(surface, self.arm_colour, self.arm_start_point, self.arm_point, 3)
 
-    def keyPress(self, key):
+    def key_press(self, key):
+        """Handle the key press"""
         if key == pygame.K_SPACE:
             # Any nessesary action here
             pass
 
     def on_render(self):
-        self.drawBackground(self._display_surf)
-        self.drawOverlay(self._display_surf)       
+        self.draw_background(self._display_surf)
+        self.draw_overlay(self._display_surf)       
 
         pygame.display.update()
