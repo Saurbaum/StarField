@@ -10,31 +10,32 @@ class Blip:
 
         self.now = 0
         self.start_time = 0
-        self.moveTime = random.randrange(50, 75)
-        self.pos = (random.randrange(0,width), random.randrange(0,height))
-        self.startPos = self.pos
-        self.targetPos = (random.randrange(0,width), random.randrange(0,height))
+        self.move_time = random.randrange(50, 75)
+        self.pos = (random.randrange(0, width), random.randrange(0, height))
+        self.start_pos = self.pos
+        self.target_pos = (random.randrange(0, width), random.randrange(0, height))
 
         self.strength = 50
 
-    def on_loop(self, updateTime):
-        self.now += updateTime
+    def on_loop(self, update_time):
+        """Main update loop"""
+        self.now += update_time
 
-        if self.pos == self.targetPos:
+        if self.pos == self.target_pos:
             self.target_reached()
         else:
-            if self.now > self.start_time + self.moveTime:
+            if self.now > self.start_time + self.move_time:
                 self.target_reached()
             else:
-                time_offset = (self.now - self.start_time) / self.moveTime
-                x_pos = self.startPos[0] + ((self.targetPos[0] - self.startPos[0]) * time_offset)
-                y_pos = self.startPos[1] + ((self.targetPos[1] - self.startPos[1]) * time_offset)
+                time_offset = (self.now - self.start_time) / self.move_time
+                x_pos = self.start_pos[0] + ((self.target_pos[0] - self.start_pos[0]) * time_offset)
+                y_pos = self.start_pos[1] + ((self.target_pos[1] - self.start_pos[1]) * time_offset)
                 self.pos = (int(round(x_pos)), int(round(y_pos)))
 
     def target_reached(self):
         """Blip has reached the target positions"""
         self.now = 0
-        self.pos = self.targetPos
-        self.startPos = self.targetPos
-        self.targetPos = (random.randrange(0, self.width), random.randrange(0, self.height))
-        self.moveTime = random.randrange(50, 75)
+        self.pos = self.target_pos
+        self.start_pos = self.target_pos
+        self.target_pos = (random.randrange(0, self.width), random.randrange(0, self.height))
+        self.move_time = random.randrange(50, 75)

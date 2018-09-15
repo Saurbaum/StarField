@@ -3,9 +3,9 @@
 import sys
 import ctypes
 import pygame
-import starfieldScanner
+import starfield_scanner
 import radar
-import forwardSweep
+import forward_sweep
 import blip
 
 class App:
@@ -30,10 +30,10 @@ class App:
 
         self.blip = blip.Blip(width, height)
 
-        self.starfield_scanner = starfieldScanner.starfieldScanner(
+        self.starfield_scanner = starfield_scanner.StarfieldScanner(
             width, height, self._display_surf)
         self.radar = radar.radar(width, height, self._display_surf, self.blip)
-        self.forward_sweep = forwardSweep.forwardSweep(width, height, self._display_surf)
+        self.forward_sweep = forward_sweep.ForwardSweep(width, height, self._display_surf)
         self.active_display = self.starfield_scanner
 
     def on_event(self, event):
