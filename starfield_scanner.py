@@ -1,4 +1,5 @@
-import sys
+"""Provides a grid and scanning reticle over a field of randomly generated stars"""
+
 import pygame
 from pygame.locals import *
 import overlay
@@ -22,7 +23,7 @@ class StarfieldScanner:
     def on_loop(self, update_time):
         self.now += update_time
         if self.now >= self.regenerate_stars_trigger:
-            self.stars.updateStarfield()
+            self.stars.update_starfield()
             self.now -= self.regenerate_stars_trigger
 
         self.overlay.on_loop(update_time)
