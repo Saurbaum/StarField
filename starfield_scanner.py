@@ -14,10 +14,10 @@ class StarfieldScanner:
         self.now = 0
         self.regenerate_stars_trigger = 1
 
-    def drawOverlay(self):
+    def draw_overlay(self):
         self.overlay.draw(self._display_surf)
 
-    def drawStarfield(self):
+    def draw_starfield(self):
         self.stars.draw(self._display_surf)
 
     def on_loop(self, update_time):
@@ -30,10 +30,10 @@ class StarfieldScanner:
 
     def on_render(self):
         self._display_surf.fill((0, 0, 0))
-        self.drawStarfield()
-        self.drawOverlay()
+        self.draw_starfield()
+        self.draw_overlay()
         pygame.display.update()
 
-    def keyPress(self, key):
+    def key_press(self, key):
         if key == pygame.K_SPACE:
-            self.stars.updateStarfield()
+            self.stars.update_starfield()

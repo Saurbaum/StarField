@@ -8,12 +8,12 @@ class stars(object):
     def __init__(self, width, height):
         self.width = width
         self.height = height
-        self.starSurface = pygame.Surface((width, height), pygame.HWSURFACE)
+        self.star_surface = pygame.Surface((width, height), pygame.HWSURFACE)
         self.update_starfield()
 
     def draw(self, surface):
         """Reder stars to provided surface"""
-        surface.blit(self.starSurface, (0, 0))
+        surface.blit(self.star_surface, (0, 0))
 
     def pickColour(self):
         """Pick a colour for the stars"""
@@ -29,13 +29,13 @@ class stars(object):
         if colour == 3: # Purple
             purple = random.randrange(200, 255)
             return (purple, random.randrange(50, 128), purple)   
-            
+
         # White
         light_tint = random.randrange(200, 255) 
         return (200, light_tint, light_tint)
 
     def update_starfield(self):
         """Update stars"""
-        self.starSurface.fill((0 ,0, 0))
+        self.star_surface.fill((0, 0, 0))
         for _ in range(0, 40):
-            pygame.draw.circle(self.starSurface, self.pickColour(), (random.randrange(0, self.width), random.randrange(0, self.height)), random.randrange(1, 7, 2), 0)
+            pygame.draw.circle(self.star_surface, self.pickColour(), (random.randrange(0, self.width), random.randrange(0, self.height)), random.randrange(1, 7, 2), 0)

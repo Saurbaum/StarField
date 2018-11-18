@@ -63,6 +63,11 @@ class ForwardSweep:
         else:
             self.progress_sweep(progress)
 
+    def key_press(self, key):
+        if key == pygame.K_SPACE:
+            # Any nessesary action here
+            pass
+
     def progress_sweep(self, progress):
         """Update the sweep arm"""
         angle = self.start_angle + ((self.target_angle - self.start_angle) * progress)

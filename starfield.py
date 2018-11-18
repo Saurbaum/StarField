@@ -50,7 +50,7 @@ class App:
             elif event.key == pygame.K_3:
                 self.active_display = self.forward_sweep
             else:
-                self.active_display.keyPress(event.key)
+                self.active_display.key_press(event.key)
 
     def on_loop(self):
         """Main logic loop"""

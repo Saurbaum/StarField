@@ -1,21 +1,22 @@
 """A spinning radar display"""
 
-from rotation import rotate_point, get_angle
 from collections import deque
-import pygame
 import math
+import pygame
+from rotation import rotate_point, get_angle
 from tweenColours import tweenColours
 
 class radar:
+    """ A radial radar display """
     def __init__(self, width, height, displaySurface, blip):
         self.rendering = True
         self._display_surf = displaySurface
         self.centre = (width//2, height//2)
 
-        maxSpace = min(width, height)
+        max_space = min(width, height)
 
-        self.colour = (0,128,0)
-        self.backgroundColour = (0,28,0)
+        self.colour = (0, 128, 0)
+        self.background_colour = (0, 28, 0)
 
         self.updateTime = 0
 
@@ -28,7 +29,7 @@ class radar:
         self.lastAngle = self.currentAngle
         self.targetAngle = self.startAngle + self.rotationSpeed
 
-        self.radius = int((maxSpace * 0.95) / 2)
+        self.radius = int((max_space * 0.95) / 2)
         self.armLength = self.radius
 
         self.armPoint = (self.centre[0], self.centre[1] - self.armLength)
@@ -77,7 +78,7 @@ class radar:
         ticks.append((first, second))
 
     def drawBackground(self, surface):
-        surface.fill(self.backgroundColour)
+        surface.fill(self.background_colour)
 
     def drawBlip(self, surface):
         if self.blipStartTime == -1:
@@ -94,7 +95,7 @@ class radar:
         for size in range(steps):
             value = self.blip.strength - size
             timeOffset = (value) / self.blip.strength
-            pygame.draw.circle(surface, tweenColours(self.colour, self.backgroundColour, timeOffset), self.blipRenderPos, value)
+            pygame.draw.circle(surface, tweenColours(self.colour, self.background_colour, timeOffset), self.blipRenderPos, value)
 
     def drawOverlay(self, surface):
         surface.blit(self.overLaySurface, (0,0))
@@ -127,7 +128,7 @@ class radar:
 
         pygame.display.update()
 
-    def keyPress(self, key):
+    def key_press(self, key):
         if key == pygame.K_SPACE:
             # Any nessesary action here
             pass
