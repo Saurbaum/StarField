@@ -10,12 +10,12 @@ class Button:
 
     def is_point_within(self, point):
         """Tests if point is inside the button"""
-        n = len(self.coordinates)
+        position = len(self.coordinates)
         inside = False
         p1x, p1y = self.coordinates[0]
 
-        for i in range(n+1):
-            p2x, p2y = self.coordinates[i % n]
+        for i in range(position + 1):
+            p2x, p2y = self.coordinates[i % position]
             if point.y > min(p1y, p2y):
                 if point.y <= max(p1y, p2y):
                     if point.x <= max(p1x, p2x):
@@ -29,5 +29,7 @@ class Button:
 
 
     def draw(self, surface, colour):
+        """ Draw the button """
         pygame.draw.polygon(surface, colour, self.coordinates)
         pygame.draw.polygon(surface, colour, self.coordinates, 1)
+        

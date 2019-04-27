@@ -1,31 +1,35 @@
-import pygame
-import random
-import grid
-import textDisplay
-from tweenColours import *
+""" Overlay """
 
-class overlay:
+import random
+import pygame
+import grid
+import text_display
+from tween_colours import tween_colours
+
+class Overlay:
+    """ An overlay is a grid and targeting reticle that will track around the screen """
     def __init__(self, width, height):
         random.seed()
-        self.startColour = self.pickNewColour()
-        self.targetColour = self.pickNewColour()
-        self.colour = self.startColour
-        self.pos = (random.randrange(0,width), random.randrange(0,height))
-        self.targetPos = (random.randrange(0,width), random.randrange(0,height))
-        self.startPos = self.pos
-        self.moveTime = 5
-        self.startTime = 0
+        self.start_colour = self.pick_new_colour()
+        self.target_colour = self.pick_new_colour()
+        self.colour = self.start_colour
+        self.pos = (random.randrange(0, width), random.randrange(0, height))
+        self.target_pos = (random.randrange(0, width), random.randrange(0, height))
+        self.start_pos = self.pos
+        self.move_time = 5
+        self.start_time = 0
         self.width = width
         self.height = height
 
         self.grid = grid.Grid(self.width, self.height)
-        self.history = textDisplay.textDisplay((10, 10), 230, 480)
-        self.updatePosText()
+        self.history = text_display.TextDisplay((10, 10), 230, 480)
+        self.update_pos_text()
 
         self.now = 0
 
     def draw(self, surface):
-        self.grid.draw(surface, self.colour);
+        """ Draw the overlay """
+        self.grid.draw(surface, self.colour)
 
         pygame.draw.line(surface, self.colour, (0, self.pos[1]), (self.width, self.pos[1]))
         pygame.draw.line(surface, self.colour, (self.pos[0], 0), (self.pos[0], self.height))
@@ -34,51 +38,55 @@ class overlay:
         pygame.draw.line(surface, self.colour, (self.pos[0] + 10, self.pos[1] - 10), (self.pos[0] + 18, self.pos[1] - 18))
         pygame.draw.line(surface, self.colour, (self.pos[0] + 10, self.pos[1] + 10), (self.pos[0] + 18, self.pos[1] + 18))
         pygame.draw.line(surface, self.colour, (self.pos[0] - 10, self.pos[1] + 10), (self.pos[0] - 18, self.pos[1] + 18))
-        
+
         self.history.draw(surface, self.colour)
 
-    def updatePosText(self):
-        self.history.updateCurrentText(''.join((str(self.pos[0]/10.0), ', ', str(self.pos[1]/10.0))), self.colour)
+    def update_pos_text(self):
+        """ Update the current position on the history """
+        self.history.update_current_text(''.join((str(self.pos[0]/10.0), ', ', str(self.pos[1]/10.0))), self.colour)
 
-    def pickNewColour(self):
-        red = random.randrange(10,255)
-        green = random.randrange(10,255)
-        blue = random.randrange(10,255)
+    def pick_new_colour(self):
+        """ Generates a new random colour """
+        red = random.randrange(10, 255)
+        green = random.randrange(10, 255)
+        blue = random.randrange(10, 255)
 
         if red + green + blue < 255:
-            selector = random.randrange(0,2)
+            selector = random.randrange(0, 2)
             if selector == 0:
-                red = random.randrange(200,255)
+                red = random.randrange(200, 255)
             if selector == 1:
-                green = random.randrange(200,255)
+                green = random.randrange(200, 255)
             if selector == 2:
-                blue = random.randrange(200,255)
+                blue = random.randrange(200, 255)
 
         return (red, green, blue)
 
-    def on_loop(self, updateTime):
-        self.now += updateTime
+    def on_loop(self, update_time):
+        """ Update loop """
+        self.now += update_time
 
-        self.updatePosText()
+        self.update_pos_text()
 
-        if self.pos == self.targetPos:
+        if self.pos == self.target_pos:
             self.target_reached()
         else:
-            if self.now > self.startTime + self.moveTime:
+            if self.now > self.start_time + self.move_time:
                 self.target_reached()
             else:
-                timeOffset = (self.now - self.startTime) / self.moveTime
-                xPos = self.startPos[0] + ((self.targetPos[0] - self.startPos[0]) * timeOffset)
-                yPos = self.startPos[1] + ((self.targetPos[1] - self.startPos[1]) * timeOffset)
-                self.colour = tweenColours(self.startColour, self.targetColour, timeOffset)
-                self.pos = (int(round(xPos)), int(round(yPos)))
+                time_offset = (self.now - self.start_time) / self.move_time
+                x_pos = self.start_pos[0] + ((self.target_pos[0] - self.start_pos[0]) * time_offset)
+                y_pos = self.start_pos[1] + ((self.target_pos[1] - self.start_pos[1]) * time_offset)
+                self.colour = tween_colours(self.start_colour, self.target_colour, time_offset)
+                self.pos = (int(round(x_pos)), int(round(y_pos)))
 
     def target_reached(self):
+        """ Set a new target for the overlay """
         self.now = 0
-        self.pos = self.targetPos
-        self.startPos = self.targetPos
-        self.targetPos = (random.randrange(0, self.width), random.randrange(0, self.height))
-        self.moveTime = random.randrange(2, 5)
-        self.startColour = self.targetColour
-        self.targetColour = self.pickNewColour()
-        self.history.updateHistory()
+        self.pos = self.target_pos
+        self.start_pos = self.target_pos
+        self.target_pos = (random.randrange(0, self.width), random.randrange(0, self.height))
+        self.move_time = random.randrange(2, 5)
+        self.start_colour = self.target_colour
+        self.target_colour = self.pick_new_colour()
+        self.history.update_history()

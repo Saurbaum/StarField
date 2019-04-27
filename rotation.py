@@ -18,9 +18,9 @@ def rotate_point(offset, angle, point):
     # Translate point back:
     return (x_new + offset[0], y_new + offset[1])
 
-def get_angle(x, y):
+def get_angle(x_offset, y_offset):
     """Get the angle between 2 points"""
-    angle = math.degrees(math.atan2(y, x))
+    angle = math.degrees(math.atan2(y_offset, x_offset))
 
     if angle < 0:
         angle += 360

@@ -4,9 +4,9 @@ from collections import deque
 import math
 import pygame
 from rotation import rotate_point, get_angle
-from tweenColours import tweenColours
+from tween_colours import tween_colours
 
-class radar:
+class Radar:
     """ A radial radar display """
     def __init__(self, width, height, displaySurface, blip):
         self.rendering = True
@@ -18,123 +18,133 @@ class radar:
         self.colour = (0, 128, 0)
         self.background_colour = (0, 28, 0)
 
-        self.updateTime = 0
+        self.update_time = 0
 
         self.now = 0
-        self.moveTime = 5
+        self.move_time = 5
 
-        self.rotationSpeed = 360.0
-        self.startAngle = 0.0
-        self.currentAngle = self.startAngle
-        self.lastAngle = self.currentAngle
-        self.targetAngle = self.startAngle + self.rotationSpeed
+        self.rotation_speed = 360.0
+        self.start_angle = 0.0
+        self.current_angle = self.start_angle
+        self.last_angle = self.current_angle
+        self.target_angle = self.start_angle + self.rotation_speed
 
         self.radius = int((max_space * 0.95) / 2)
-        self.armLength = self.radius
+        self.arm_length = self.radius
 
-        self.armPoint = (self.centre[0], self.centre[1] - self.armLength)
-        self.startPoint = self.armPoint
+        self.arm_point = (self.centre[0], self.centre[1] - self.arm_length)
+        self.start_point = self.arm_point
 
-        self.majorTicks = deque()
-        self.minorTicks = deque()
+        self.major_ticks = deque()
+        self.minor_ticks = deque()
 
-        self.overLaySurface = pygame.Surface((width, height), pygame.HWSURFACE | pygame.SRCALPHA)
-        self.prepareOverlay()
+        self.overlay_surface = pygame.Surface((width, height), pygame.HWSURFACE | pygame.SRCALPHA)
+        self.prepare_overlay()
 
         self.blip = blip
-        self.blipRenderPos = (0, 0)
-        self.blipFadeTime = 4.8
-        self.blipStartTime = -1
+        self.blip_render_pos = (0, 0)
+        self.blip_fade_time = 4.8
+        self.blip_start_time = -1
 
-    def prepareOverlay(self):
-        self.overLaySurface.fill((0, 28, 0))
+    def prepare_overlay(self):
+        """ Setup the overlay for first use """
+        self.overlay_surface.fill((0, 28, 0))
 
-        self.majorTickReference = (
+        self.major_tick_reference = (
             (self.centre[0], self.centre[1] + (self.radius + 6)),
             (self.centre[0], self.centre[1] + (self.radius - 6)))
-        majorTickAngle = 45
-        for i in range(0, 360//majorTickAngle):
-            self.createTicks(self.majorTickReference, self.majorTicks, i*majorTickAngle)
+        major_tick_angle = 45
+        for i in range(0, 360//major_tick_angle):
+            self.create_ticks(self.major_tick_reference, self.major_ticks, i*major_tick_angle)
 
-        self.minorTickReference = (
+        self.minor_tick_reference = (
             (self.centre[0], self.centre[1] + (self.radius + 4)),
             (self.centre[0], self.centre[1] + (self.radius - 4)))
-        minorTickAngle = 11.25
-        for i in range(0, int(360/minorTickAngle)):
-            self.createTicks(self.minorTickReference, self.minorTicks, i*minorTickAngle)
+        minor_tick_angle = 11.25
+        for i in range(0, int(360/minor_tick_angle)):
+            self.create_ticks(self.minor_tick_reference, self.minor_ticks, i*minor_tick_angle)
 
-        pygame.draw.circle(self.overLaySurface, (0, 0 ,0, 0), self.centre, self.radius, 0)
+        pygame.draw.circle(self.overlay_surface, (0, 0, 0, 0), self.centre, self.radius, 0)
 
-        pygame.draw.circle(self.overLaySurface, self.colour, self.centre, self.radius, 3)
-        for tick in self.majorTicks:
-            pygame.draw.line(self.overLaySurface, self.colour, tick[0], tick[1], 3)
+        pygame.draw.circle(self.overlay_surface, self.colour, self.centre, self.radius, 3)
+        for tick in self.major_ticks:
+            pygame.draw.line(self.overlay_surface, self.colour, tick[0], tick[1], 3)
 
-        for tick in self.minorTicks:
-            pygame.draw.line(self.overLaySurface, self.colour, tick[0], tick[1], 1)
+        for tick in self.minor_ticks:
+            pygame.draw.line(self.overlay_surface, self.colour, tick[0], tick[1], 1)
 
-    def createTicks(self, referencePos, ticks, angle):
-        first = rotate_point(self.centre, angle, referencePos[0])
-        second = rotate_point(self.centre, angle, referencePos[1])
+    def create_ticks(self, reference_pos, ticks, angle):
+        """ Setup the appropritate ticks marks on the edge of the radar """
+        first = rotate_point(self.centre, angle, reference_pos[0])
+        second = rotate_point(self.centre, angle, reference_pos[1])
         ticks.append((first, second))
 
-    def drawBackground(self, surface):
+    def draw_background(self, surface):
+        """ Fill backgourn with colour """
         surface.fill(self.background_colour)
 
-    def drawBlip(self, surface):
-        if self.blipStartTime == -1:
+    def draw_blip(self, surface):
+        """ Draw the blip """
+        if self.blip_start_time == -1:
             return
 
-        progress = (self.updateTime - self.blipStartTime) / self.blipFadeTime
+        progress = (self.update_time - self.blip_start_time) / self.blip_fade_time
 
         if progress >= 1.0 or progress < 0:
-            self.blipStartTime = -1
+            self.blip_start_time = -1
             return
 
         steps = int(self.blip.strength * (1 - progress))
 
         for size in range(steps):
             value = self.blip.strength - size
-            timeOffset = (value) / self.blip.strength
-            pygame.draw.circle(surface, tweenColours(self.colour, self.background_colour, timeOffset), self.blipRenderPos, value)
+            time_offset = (value) / self.blip.strength
+            pygame.draw.circle(surface, tween_colours(self.colour, self.background_colour, time_offset), self.blip_render_pos, value)
 
-    def drawOverlay(self, surface):
-        surface.blit(self.overLaySurface, (0,0))
-        pygame.draw.line(surface, self.colour, self.centre, self.armPoint, 3)
+    def draw_overlay(self, surface):
+        """ Draw the overlay """
+        surface.blit(self.overlay_surface, (0, 0))
+        pygame.draw.line(surface, self.colour, self.centre, self.arm_point, 3)
 
-    def on_loop(self, updateTime):
-        self.updateTime += updateTime
-        self.now += updateTime
-        progress = self.now / self.moveTime
+    def on_loop(self, update_time):
+        """ Main update loop """
+        self.update_time += update_time
+        self.now += update_time
+        progress = self.now / self.move_time
 
         if progress >= 1.0:
-            self.progressSweep(1.0)
-            self.targetReached(updateTime)
+            self.progress_sweep(1.0)
+            self.target_reached()
         else:
-            self.progressSweep(progress)
+            self.progress_sweep(progress)
 
-    def targetReached(self, updateTime):
+    def target_reached(self):
+        """ Loop created reset angle to be based from 0 degrees again """
         self.now = 0
-        self.startAngle = self.currentAngle
+        self.start_angle = self.current_angle
 
-        if self.startAngle > 360.0:
-            self.startAngle -= 360.0
+        if self.start_angle > 360.0:
+            self.start_angle -= 360.0
 
-        self.targetAngle = self.startAngle + self.rotationSpeed
+        self.target_angle = self.start_angle + self.rotation_speed
 
     def on_render(self):
-        self.drawBackground(self._display_surf)
-        self.drawBlip(self._display_surf)
-        self.drawOverlay(self._display_surf)   
+        """ Main drawing trigger """
+        self.draw_background(self._display_surf)
+        self.draw_blip(self._display_surf)
+        self.draw_overlay(self._display_surf)
 
         pygame.display.update()
 
     def key_press(self, key):
+        """ Handle user input """
         if key == pygame.K_SPACE:
             # Any nessesary action here
             pass
 
-    def progressSweep(self, progress):
-        angle = self.startAngle + ((self.targetAngle - self.startAngle) * progress)
+    def progress_sweep(self, progress):
+        """ Move the arm of the radar """
+        angle = self.start_angle + ((self.target_angle - self.start_angle) * progress)
 
         if angle > 360:
             angle -= 360
@@ -142,12 +152,12 @@ class radar:
         blip_angle = get_angle(self.centre[1] - self.blip.pos[1], self.blip.pos[0] - self.centre[0])
 
         blip_distance = math.sqrt(
-            (self.centre[1] - self.blip.pos[1]) ** 2 + (self.blip.pos[0] - self.centre[0])**2) 
+            (self.centre[1] - self.blip.pos[1]) ** 2 + (self.blip.pos[0] - self.centre[0])**2)
 
-        if (angle >= blip_angle > self.lastAngle) and (self.radius > blip_distance):
-            self.blipRenderPos = (self.blip.pos[0], self.blip.pos[1])
-            self.blipStartTime = self.updateTime
+        if (angle >= blip_angle > self.last_angle) and (self.radius > blip_distance):
+            self.blip_render_pos = (self.blip.pos[0], self.blip.pos[1])
+            self.blip_start_time = self.update_time
 
-        self.currentAngle = angle
-        self.lastAngle = self.currentAngle
-        self.armPoint = rotate_point(self.centre, self.currentAngle, self.startPoint)
+        self.current_angle = angle
+        self.last_angle = self.current_angle
+        self.arm_point = rotate_point(self.centre, self.current_angle, self.start_point)

@@ -64,6 +64,7 @@ class ForwardSweep:
             self.progress_sweep(progress)
 
     def key_press(self, key):
+        """Handle the key press"""
         if key == pygame.K_SPACE:
             # Any nessesary action here
             pass
@@ -90,14 +91,9 @@ class ForwardSweep:
         surface.blit(self.overlay_surface, (0, 0))
         pygame.draw.line(surface, self.arm_colour, self.arm_start_point, self.arm_point, 3)
 
-    def key_press(self, key):
-        """Handle the key press"""
-        if key == pygame.K_SPACE:
-            # Any nessesary action here
-            pass
-
     def on_render(self):
+        """ The drawing trigger """
         self.draw_background(self._display_surf)
-        self.draw_overlay(self._display_surf)       
+        self.draw_overlay(self._display_surf)
 
         pygame.display.update()

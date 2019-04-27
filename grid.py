@@ -25,7 +25,7 @@ class Grid:
         pos = self.step
 
         for _i in range(self.horizontal_steps):
-            pygame.draw.line(surface, colour, (pos, 0), (pos, self.height)) 
+            pygame.draw.line(surface, colour, (pos, 0), (pos, self.height))
             pos += self.step
 
         pos = self.step

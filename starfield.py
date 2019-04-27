@@ -32,7 +32,7 @@ class App:
 
         self.starfield_scanner = starfield_scanner.StarfieldScanner(
             width, height, self._display_surf)
-        self.radar = radar.radar(width, height, self._display_surf, self.blip)
+        self.radar = radar.Radar(width, height, self._display_surf, self.blip)
         self.forward_sweep = forward_sweep.ForwardSweep(width, height, self._display_surf)
         self.active_display = self.starfield_scanner
 
