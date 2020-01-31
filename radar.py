@@ -112,16 +112,15 @@ class Radar:
         self.now += update_time
         progress = self.now / self.move_time
 
+        self.progress_sweep(progress)
+
         if progress >= 1.0:
-            self.progress_sweep(1.0)
             self.target_reached()
-        else:
-            self.progress_sweep(progress)
 
     def target_reached(self):
         """ Loop created reset angle to be based from 0 degrees again """
-        self.now = 0
         self.start_angle = self.current_angle
+        self.now = self.now - self.move_time
 
         if self.start_angle > 360.0:
             self.start_angle -= 360.0
