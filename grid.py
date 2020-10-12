@@ -10,6 +10,10 @@ class Grid:
         self.width = width
         self.height = height
         self.step = math.gcd(self.width, self.height) // 2
+
+        if self.step == 1:
+            self.step = 50
+
         self.horizontal_steps = self.width//self.step
         self.vertical_steps = self.height//self.step
 

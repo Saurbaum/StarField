@@ -25,7 +25,7 @@ class App:
 
         width, height = pygame.display.Info().current_w, pygame.display.Info().current_h
         self._display_surf = pygame.display.set_mode(
-            (width, height), pygame.FULLSCREEN | pygame.HWSURFACE | pygame.DOUBLEBUF)
+            (width, height), pygame.NOFRAME | pygame.HWSURFACE | pygame.DOUBLEBUF)
         self._running = True
 
         self.blip = blip.Blip(width, height)
