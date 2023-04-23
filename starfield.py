@@ -6,7 +6,7 @@ import pygame
 import starfield_scanner
 import radar
 import forward_sweep
-import blip
+import target
 
 class App:
     """Applicaiton for starfield scanner"""
@@ -16,6 +16,8 @@ class App:
         self.active_display = None
         self.clock = pygame.time.Clock()
         self.now = 0
+        self.target_count = 5
+        self.targets = []
 
         pygame.init()
         pygame.mouse.set_visible(False)
@@ -28,11 +30,12 @@ class App:
             (width, height), pygame.NOFRAME | pygame.HWSURFACE | pygame.DOUBLEBUF)
         self._running = True
 
-        self.blip = blip.Blip(width, height)
+        for x in range(self.target_count):
+            self.targets.append(target.Target(width, height))
 
         self.starfield_scanner = starfield_scanner.StarfieldScanner(
             width, height, self._display_surf)
-        self.radar = radar.Radar(width, height, self._display_surf, self.blip)
+        self.radar = radar.Radar(width, height, self._display_surf, self.targets)
         self.forward_sweep = forward_sweep.ForwardSweep(width, height, self._display_surf)
         self.active_display = self.starfield_scanner
 
@@ -58,7 +61,8 @@ class App:
         self.starfield_scanner.on_loop(self.now)
         self.radar.on_loop(self.now)
         self.forward_sweep.on_loop(self.now)
-        self.blip.on_loop(self.now)
+        for target in self.targets:
+            target.on_loop(self.now)
 
     def on_render(self):
         """Render loop"""

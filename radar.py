@@ -4,11 +4,12 @@ from collections import deque
 import math
 import pygame
 from rotation import rotate_point, get_angle
-from tween_colours import tween_colours
+
+import blip
 
 class Radar:
     """ A radial radar display """
-    def __init__(self, width, height, displaySurface, blip):
+    def __init__(self, width, height, displaySurface, targets):
         self.rendering = True
         self._display_surf = displaySurface
         self.centre = (width//2, height//2)
@@ -40,11 +41,9 @@ class Radar:
 
         self.overlay_surface = pygame.Surface((width, height), pygame.HWSURFACE | pygame.SRCALPHA)
         self.prepare_overlay()
+        self.blips = []
 
-        self.blip = blip
-        self.blip_render_pos = (0, 0)
-        self.blip_fade_time = 4.8
-        self.blip_start_time = -1
+        self.targets = targets
 
     def prepare_overlay(self):
         """ Setup the overlay for first use """
@@ -83,23 +82,10 @@ class Radar:
         """ Fill backgourn with colour """
         surface.fill(self.background_colour)
 
-    def draw_blip(self, surface):
-        """ Draw the blip """
-        if self.blip_start_time == -1:
-            return
-
-        progress = (self.update_time - self.blip_start_time) / self.blip_fade_time
-
-        if progress >= 1.0 or progress < 0:
-            self.blip_start_time = -1
-            return
-
-        steps = int(self.blip.strength * (1 - progress))
-
-        for size in range(steps):
-            value = self.blip.strength - size
-            time_offset = (value) / self.blip.strength
-            pygame.draw.circle(surface, tween_colours(self.colour, self.background_colour, time_offset), self.blip_render_pos, value)
+    def draw_blips(self, surface):
+        """ Draw the blips """
+        for blip in self.blips:
+            blip.on_render(surface)
 
     def draw_overlay(self, surface):
         """ Draw the overlay """
@@ -111,6 +97,11 @@ class Radar:
         self.update_time += update_time
         self.now += update_time
         progress = self.now / self.move_time
+
+        for blip in self.blips:
+            blip.on_loop(update_time)
+            if blip.start_time == -1:
+                self.blips.remove(blip)
 
         self.progress_sweep(progress)
 
@@ -130,7 +121,7 @@ class Radar:
     def on_render(self):
         """ Main drawing trigger """
         self.draw_background(self._display_surf)
-        self.draw_blip(self._display_surf)
+        self.draw_blips(self._display_surf)
         self.draw_overlay(self._display_surf)
 
         pygame.display.update()
@@ -148,14 +139,15 @@ class Radar:
         if angle > 360:
             angle -= 360
 
-        blip_angle = get_angle(self.centre[1] - self.blip.pos[1], self.blip.pos[0] - self.centre[0])
+        for target in self.targets:
+            blip_angle = get_angle(self.centre[1] - target.pos[1], target.pos[0] - self.centre[0])
 
-        blip_distance = math.sqrt(
-            (self.centre[1] - self.blip.pos[1]) ** 2 + (self.blip.pos[0] - self.centre[0])**2)
+            blip_distance = math.sqrt(
+                (self.centre[1] - target.pos[1]) ** 2 + (target.pos[0] - self.centre[0])**2)
 
-        if (angle >= blip_angle > self.last_angle) and (self.radius > blip_distance):
-            self.blip_render_pos = (self.blip.pos[0], self.blip.pos[1])
-            self.blip_start_time = self.update_time
+            if (angle >= blip_angle > self.last_angle) and (self.radius > blip_distance):
+                newBlip = blip.Blip(target.pos, self.update_time, target.strength, 4.8, self.colour, self.background_colour)
+                self.blips.append(newBlip)
 
         self.current_angle = angle
         self.last_angle = self.current_angle

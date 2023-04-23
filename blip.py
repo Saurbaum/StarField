@@ -1,41 +1,40 @@
 """Blips for displaying on a radar"""
 
-import random
+import pygame
+from tween_colours import tween_colours
 
 class Blip:
-    """A blip to move on a display"""
-    def __init__(self, width, height):
-        self.width = width
-        self.height = height
+    """A blip to draw on a display"""
+    def __init__(self, pos, startTime, strength, fade_time, colour, fade_colour):
+        self.pos = pos
+        self.fade_time = fade_time
+        self.start_time = startTime
+        self.strength = strength
+        self.progress = 0
+        self.colour = colour
+        self.fade_colour = fade_colour
 
-        self.now = 0
-        self.start_time = 0
-        self.move_time = random.randrange(50, 75)
-        self.pos = (random.randrange(0, width), random.randrange(0, height))
-        self.start_pos = self.pos
-        self.target_pos = (random.randrange(0, width), random.randrange(0, height))
+    def on_render(self, surface):
+        if self.start_time == -1:
+            return
 
-        self.strength = 50
+        if self.progress >= 1.0 or self.progress < 0:
+            self.start_time = -1
+            return
+
+        steps = int(self.strength * (1 - self.progress))
+
+        for size in range(steps):
+            value = self.strength - size
+            time_offset = (value) / self.strength
+            pygame.draw.circle(surface, tween_colours(self.colour, self.fade_colour, time_offset), self.pos, value)
 
     def on_loop(self, update_time):
         """Main update loop"""
-        self.now += update_time
+        if self.start_time == -1:
+            return
 
-        if self.pos == self.target_pos:
-            self.target_reached()
-        else:
-            if self.now > self.start_time + self.move_time:
-                self.target_reached()
-            else:
-                time_offset = (self.now - self.start_time) / self.move_time
-                x_pos = self.start_pos[0] + ((self.target_pos[0] - self.start_pos[0]) * time_offset)
-                y_pos = self.start_pos[1] + ((self.target_pos[1] - self.start_pos[1]) * time_offset)
-                self.pos = (int(round(x_pos)), int(round(y_pos)))
+        self.progress = (update_time - self.start_time) / self.fade_time
 
-    def target_reached(self):
-        """Blip has reached the target positions"""
-        self.now = 0
-        self.pos = self.target_pos
-        self.start_pos = self.target_pos
-        self.target_pos = (random.randrange(0, self.width), random.randrange(0, self.height))
-        self.move_time = random.randrange(50, 75)
+        if self.progress >= 1.0 or self.progress < 0:
+            self.start_time = -1
