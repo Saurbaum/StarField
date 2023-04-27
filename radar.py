@@ -124,6 +124,9 @@ class Radar:
         self.draw_blips(self._display_surf)
         self.draw_overlay(self._display_surf)
 
+        for target in self.targets:
+            target.on_render(self._display_surf)
+
         pygame.display.update()
 
     def key_press(self, key):
@@ -136,7 +139,7 @@ class Radar:
         """ Move the arm of the radar """
         angle = self.start_angle + ((self.target_angle - self.start_angle) * progress)
 
-        if angle > 360:
+        while angle > 360:
             angle -= 360
 
         for target in self.targets:

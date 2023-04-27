@@ -16,7 +16,7 @@ class App:
         self.active_display = None
         self.clock = pygame.time.Clock()
         self.now = 0
-        self.target_count = 5
+        self.target_count = 50
         self.targets = []
 
         pygame.init()
@@ -51,7 +51,7 @@ class App:
             elif event.key == pygame.K_2:
                 self.active_display = self.radar
             elif event.key == pygame.K_3:
-                self.active_display = self.forward_sweep
+                self.active_display = self.forward_sweep2
             else:
                 self.active_display.key_press(event.key)
 

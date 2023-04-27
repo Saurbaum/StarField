@@ -1,7 +1,7 @@
 """Target for moving around"""
 
 import random
-
+import pygame
 class Target:
     """A Target to move around the screen"""
     def __init__(self, width, height):
@@ -16,6 +16,10 @@ class Target:
         self.target_pos = (random.randrange(0, width), random.randrange(0, height))
 
         self.strength = 50
+
+    def on_render(self, surface):
+        pygame.draw.circle(surface, (128,128,128), self.pos, 5)
+
 
     def on_loop(self, update_time):
         """Main update loop"""

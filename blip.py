@@ -9,6 +9,7 @@ class Blip:
         self.pos = pos
         self.fade_time = fade_time
         self.start_time = startTime
+        self.update_time = startTime
         self.strength = strength
         self.progress = 0
         self.colour = colour
@@ -30,11 +31,12 @@ class Blip:
             pygame.draw.circle(surface, tween_colours(self.colour, self.fade_colour, time_offset), self.pos, value)
 
     def on_loop(self, update_time):
-        """Main update loop"""
+        self.update_time += update_time
+
         if self.start_time == -1:
             return
 
-        self.progress = (update_time - self.start_time) / self.fade_time
+        self.progress = (self.update_time - self.start_time) / self.fade_time
 
         if self.progress >= 1.0 or self.progress < 0:
             self.start_time = -1
