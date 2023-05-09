@@ -36,7 +36,7 @@ class App:
         self.starfield_scanner = starfield_scanner.StarfieldScanner(
             width, height, self._display_surf)
         self.radar = radar.Radar(width, height, self._display_surf, self.targets)
-        self.forward_sweep = forward_sweep.ForwardSweep(width, height, self._display_surf)
+        self.forward_sweep = forward_sweep.ForwardSweep(width, height, self._display_surf, self.targets, height/3, 0)
         self.active_display = self.starfield_scanner
 
     def on_event(self, event):
@@ -51,7 +51,7 @@ class App:
             elif event.key == pygame.K_2:
                 self.active_display = self.radar
             elif event.key == pygame.K_3:
-                self.active_display = self.forward_sweep2
+                self.active_display = self.forward_sweep
             else:
                 self.active_display.key_press(event.key)
 

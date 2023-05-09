@@ -16,8 +16,8 @@ class Radar:
 
         max_space = min(width, height)
 
-        self.colour = (0, 128, 0)
-        self.background_colour = (0, 28, 0)
+        self.colour = (0, 128, 0, 255)
+        self.background_colour = (0, 28, 0, 0)
 
         self.update_time = 0
 
@@ -125,7 +125,7 @@ class Radar:
         self.draw_overlay(self._display_surf)
 
         for target in self.targets:
-            target.on_render(self._display_surf)
+            target.on_render(self._display_surf, (0, 0))
 
         pygame.display.update()
 

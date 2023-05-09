@@ -2,6 +2,7 @@
 
 import pygame
 from tween_colours import tween_colours
+from alpha_draw import draw_circle_alpha
 
 class Blip:
     """A blip to draw on a display"""
@@ -25,10 +26,13 @@ class Blip:
 
         steps = int(self.strength * (1 - self.progress))
 
-        for size in range(steps):
+        draw_circle_alpha(surface, tween_colours(self.colour, self.fade_colour, self.progress), self.pos, self.strength)
+        
+        '''for size in range(steps):
             value = self.strength - size
             time_offset = (value) / self.strength
-            pygame.draw.circle(surface, tween_colours(self.colour, self.fade_colour, time_offset), self.pos, value)
+            pygame.draw.circle(surface, tween_colours(self.colour, self.fade_colour, time_offset), self.pos, value) '''
+            
 
     def on_loop(self, update_time):
         self.update_time += update_time

@@ -50,6 +50,7 @@ class Overlay:
         red = random.randrange(10, 255)
         green = random.randrange(10, 255)
         blue = random.randrange(10, 255)
+        alpha = random.randrange(128, 255)
 
         if red + green + blue < 255:
             selector = random.randrange(0, 2)
@@ -60,7 +61,7 @@ class Overlay:
             if selector == 2:
                 blue = random.randrange(200, 255)
 
-        return (red, green, blue)
+        return (red, green, blue, alpha)
 
     def on_loop(self, update_time):
         """ Update loop """

@@ -6,7 +6,7 @@ from rotation import rotate_point
 class ForwardSweep:
     """A forward facing radar display"""
 
-    def __init__(self, width, height, displaySurface):
+    def __init__(self, width, height, displaySurface, targets, range, direction):
         self._display_surf = displaySurface
 
         self.centre = (width//2, height//2)
@@ -28,12 +28,20 @@ class ForwardSweep:
 
         self.max_angle = 0
 
+        self.height = height
+
         self.overlay_surface = pygame.Surface((width, height), pygame.HWSURFACE | pygame.SRCALPHA)
         self.prepare_overlay()
 
         self.start_angle = -self.max_angle
         self.current_angle = self.start_angle
         self.target_angle = self.max_angle
+
+        self.targets = targets
+        self.range = range
+        self.direction = direction
+
+        self.origin = (width / 2, height / 2)
 
     def prepare_overlay(self):
         """Setup the overlay for the display"""
@@ -94,6 +102,19 @@ class ForwardSweep:
     def on_render(self):
         """ The drawing trigger """
         self.draw_background(self._display_surf)
+        
+        translate = (1, self.height / self.range)
+
+        for target in self.targets:
+            if (self.is_in_view(target.pos)):
+                target.on_render(self._display_surf, translate)
+
         self.draw_overlay(self._display_surf)
 
         pygame.display.update()
+
+    def is_in_view(self, position):
+        if (position[1] < self.height - self.origin[1] and position[1] > self.height - self.origin[1] - self.range):
+            return True
+        
+        return False
