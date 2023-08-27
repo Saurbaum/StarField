@@ -24,4 +24,4 @@ It will render and update the scanner on the application loop.  The two are sepe
 This will create 40 random stars every few seconds.
 The Overlay consists of a targeting reticle, a grid and a text display of the current location and a history of the coordinates that the targeting reticle has been too.
 
-[See an example here] (ScreenShot.png)
+![Example Image](ScreenShot.png)
