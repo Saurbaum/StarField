@@ -65,6 +65,7 @@ class App:
         self.starfield_scanner.on_loop(self.now)
         self.radar.on_loop(self.now)
         self.forward_sweep.on_loop(self.now)
+        self.control_display.on_loop(self.now)
         for target in self.targets:
             target.on_loop(self.now)
 
