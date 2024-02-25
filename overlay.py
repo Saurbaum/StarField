@@ -17,7 +17,6 @@ class Overlay:
         self.target_pos = (random.randrange(0, width), random.randrange(0, height))
         self.start_pos = self.pos
         self.move_time = 5
-        self.start_time = 0
         self.width = width
         self.height = height
 
@@ -72,10 +71,10 @@ class Overlay:
         if self.pos == self.target_pos:
             self.target_reached()
         else:
-            if self.now > self.start_time + self.move_time:
+            if self.now > self.move_time:
                 self.target_reached()
             else:
-                time_offset = (self.now - self.start_time) / self.move_time
+                time_offset = self.now / self.move_time
                 x_pos = self.start_pos[0] + ((self.target_pos[0] - self.start_pos[0]) * time_offset)
                 y_pos = self.start_pos[1] + ((self.target_pos[1] - self.start_pos[1]) * time_offset)
                 self.colour = tween_colours(self.start_colour, self.target_colour, time_offset)

@@ -20,7 +20,7 @@ class ControlDisplay:
         self.now += update_time
                 
         for gauge in self.gauges:
-            gauge.on_loop(self.now)
+            gauge.on_loop(update_time)
 
     def on_render(self):
         """ Render event """

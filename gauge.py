@@ -30,8 +30,7 @@ class Gauge:
         self.start_value = 0
         self.target_value = self.current_value
 
-        self.move_time = 1.0
-        self.start_time = 0
+        self.move_time = 2
 
         self.bar_direction = direction
 
@@ -40,7 +39,6 @@ class Gauge:
     def on_loop(self, update_time):
         """ Update loop """
         self.now += update_time
-        time_offset = (self.now - self.start_time) / self.move_time
 
         if self.current_value == self.target_value:
             self.target_reached()
@@ -48,11 +46,13 @@ class Gauge:
             if self.now > self.move_time:
                 self.target_reached()
             else:
-                self.current_value = self.current_value + ((self.target_value - self.start_value) * time_offset)
+                time_offset = self.now / self.move_time
+                self.current_value = self.start_value + ((self.target_value - self.start_value) * time_offset)
 
     def target_reached(self):
         self.now = 0
         self.current_value = self.target_value
+        self.start_value = self.target_value
         self.target_value = random.randrange(0, self.max_value)
 
     def on_render(self):
