@@ -2,10 +2,17 @@
 
 import pygame
 import random
+from enum import Enum
+
+class Gague_Direction(Enum):
+    UP = 1
+    DOWN = 2
+    LEFT = 3
+    RIGHT = 4
 
 class Gauge:
     """A gauges"""
-    def __init__(self, x_pos, y_pos, width, height, max_value, displaySurface):
+    def __init__(self, x_pos, y_pos, width, height, max_value, direction: Gague_Direction, displaySurface):
         self.rendering = True
         self._display_surf = displaySurface
         self.x_pos = x_pos
@@ -14,7 +21,9 @@ class Gauge:
         self.height = height
 
         self.bar_width = self.width - (self.width / 10)
-        self.bar_max_height = self.height - (self.height / 10)
+        self.bar_max_height = self.height - 10
+        self.bar_x_pos = (self.width - self.bar_width) / 2
+        self.bar_y_pos = (self.height - self.bar_max_height) / 2
 
         self.max_value = max_value
         self.current_value = 0
@@ -23,6 +32,9 @@ class Gauge:
 
         self.move_time = 1.0
         self.start_time = 0
+
+        self.bar_direction = direction
+
         self.now = 0
         
     def on_loop(self, update_time):
@@ -52,10 +64,20 @@ class Gauge:
 
         bar = pygame.Surface((self.bar_width, height), pygame.HWSURFACE)
         bar.fill((20, 20, 20))
+        background.blit(bar, (self.bar_x_pos, self.bar_y_pos))
+
+        match self.bar_direction:
+            case Gague_Direction.UP:
+                background = pygame.transform.rotate(background, 180)
+            case Gague_Direction.DOWN:
+                background = pygame.transform.rotate(background, 0)
+            case Gague_Direction.LEFT:
+                background = pygame.transform.rotate(background, 270)
+            case Gague_Direction.RIGHT:
+                background = pygame.transform.rotate(background, 90)
 
         self._display_surf.blit(background, (self.x_pos, self.y_pos))
-        self._display_surf.blit(bar, (self.x_pos, self.y_pos))
-
+        
     def key_press(self, key):
         """ user input test """
         #if key == pygame.K_SPACE:

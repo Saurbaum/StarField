@@ -10,9 +10,10 @@ class ControlDisplay:
         self._display_surf = displaySurface
         self.now = 0
         self.gauges = []
-        self.gauges.append(gauge.Gauge(10, 10, 50, 50, 100, self._display_surf))
-        self.gauges.append(gauge.Gauge(70, 10, 50, 150, 100, self._display_surf))
-        self.gauges.append(gauge.Gauge(130, 10, 50, 250, 100, self._display_surf))
+        self.gauges.append(gauge.Gauge(10, 40, 50, 50, 100, gauge.Gague_Direction.UP, self._display_surf))
+        self.gauges.append(gauge.Gauge(70, 40, 50, 150, 100, gauge.Gague_Direction.DOWN, self._display_surf))
+        self.gauges.append(gauge.Gauge(130, 40, 50, 250, 100, gauge.Gague_Direction.RIGHT, self._display_surf))
+        self.gauges.append(gauge.Gauge(130, 120, 50, 250, 100, gauge.Gague_Direction.LEFT, self._display_surf))
 
     def on_loop(self, update_time):
         """ Update loop """
