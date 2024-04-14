@@ -4,15 +4,16 @@ import pygame
 import random
 from enum import Enum
 
-class Gague_Direction(Enum):
+class Gague_Type(Enum):
     UP = 1
     DOWN = 2
     LEFT = 3
     RIGHT = 4
+    RADIAL = 5
 
 class Gauge:
     """A gauges"""
-    def __init__(self, x_pos, y_pos, width, height, max_value, direction: Gague_Direction, displaySurface):
+    def __init__(self, x_pos, y_pos, width, height, max_value, type: Gague_Type, displaySurface):
         self.rendering = True
         self._display_surf = displaySurface
         self.x_pos = x_pos
@@ -32,7 +33,7 @@ class Gauge:
 
         self.move_time = 2
 
-        self.bar_direction = direction
+        self.type = type
 
         self.now = 0
         
@@ -62,19 +63,22 @@ class Gauge:
 
         height = self.bar_max_height * (self.current_value / self.max_value)
 
-        bar = pygame.Surface((self.bar_width, height), pygame.HWSURFACE)
-        bar.fill((20, 20, 20))
-        background.blit(bar, (self.bar_x_pos, self.bar_y_pos))
+        if self.type == Gague_Type.RADIAL:
+            pygame.draw.arc(background, (20, 20, 20), (self.bar_x_pos, self.bar_y_pos, self.bar_width, self.bar_max_height), 0.0, 1.0, int(self.bar_width/10))
+        else :
+            bar = pygame.Surface((self.bar_width, height), pygame.HWSURFACE)
+            bar.fill((20, 20, 20))
+            background.blit(bar, (self.bar_x_pos, self.bar_y_pos))
 
-        match self.bar_direction:
-            case Gague_Direction.UP:
-                background = pygame.transform.rotate(background, 180)
-            case Gague_Direction.DOWN:
-                background = pygame.transform.rotate(background, 0)
-            case Gague_Direction.LEFT:
-                background = pygame.transform.rotate(background, 270)
-            case Gague_Direction.RIGHT:
-                background = pygame.transform.rotate(background, 90)
+            match self.type:
+                case Gague_Type.UP:
+                    background = pygame.transform.rotate(background, 180)
+                case Gague_Type.DOWN:
+                    background = pygame.transform.rotate(background, 0)
+                case Gague_Type.LEFT:
+                    background = pygame.transform.rotate(background, 270)
+                case Gague_Type.RIGHT:
+                    background = pygame.transform.rotate(background, 90)
 
         self._display_surf.blit(background, (self.x_pos, self.y_pos))
         
