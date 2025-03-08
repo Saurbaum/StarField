@@ -16,6 +16,7 @@ class Ship:
         self.heading = 0
 
         self.speed = 0
+        self.now = 0
 
         self.turning = 0
 
@@ -64,6 +65,6 @@ class Ship:
         
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
-                self.turning = -1
-            if event.key == pygame.K_RIGHT:
                 self.turning = 1
+            if event.key == pygame.K_RIGHT:
+                self.turning = -1
