@@ -38,7 +38,8 @@ class StarfieldScanner:
         self.draw_overlay()
         pygame.display.update()
 
-    def key_press(self, key):
+    def key_press(self, event):
         """ user input test """
-        if key == pygame.K_SPACE:
-            self.stars.update_starfield()
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_SPACE:
+                self.stars.update_starfield()

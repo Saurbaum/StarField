@@ -32,7 +32,7 @@ class ControlDisplay:
 
         pygame.display.update()
 
-    def key_press(self, key):
+    def key_press(self, event):
         """ user input test """
         #if key == pygame.K_SPACE:
             

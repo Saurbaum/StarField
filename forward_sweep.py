@@ -71,11 +71,10 @@ class ForwardSweep:
         else:
             self.progress_sweep(progress)
 
-    def key_press(self, key):
+    def key_press(self, evevnt):
         """Handle the key press"""
-        if key == pygame.K_SPACE:
+        # if event.key == pygame.K_SPACE:
             # Any nessesary action here
-            pass
 
     def progress_sweep(self, progress):
         """Update the sweep arm"""

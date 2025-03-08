@@ -47,6 +47,7 @@ class App:
         """Event Handling"""
         if event.type == pygame.QUIT:
             self._running = False
+
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_ESCAPE:
                 self._running = False
@@ -60,8 +61,8 @@ class App:
                 self.active_display = self.control_display
             elif event.key == pygame.K_5:
                 self.active_display = self.sea_display
-            else:
-                self.active_display.key_press(event.key)
+
+        self.active_display.key_press(event)
 
     def on_loop(self):
         """Main logic loop"""

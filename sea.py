@@ -28,7 +28,7 @@ class Sea:
 
         pygame.display.update()
 
-    def key_press(self, key):
+    def key_press(self, event):
         """ user input test """
-        self.player_ship.key_press(key)
+        self.player_ship.key_press(event)
             

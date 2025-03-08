@@ -129,11 +129,10 @@ class Radar:
 
         pygame.display.update()
 
-    def key_press(self, key):
+    def key_press(self, event):
         """ Handle user input """
-        if key == pygame.K_SPACE:
+        # if event.key == pygame.K_SPACE:
             # Any nessesary action here
-            pass
 
     def progress_sweep(self, progress):
         """ Move the arm of the radar """

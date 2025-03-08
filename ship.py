@@ -17,11 +17,23 @@ class Ship:
 
         self.speed = 0
 
+        self.turning = 0
+
         self.center = (self.x_pos + (self.width // 2), self.y_pos + (self.length // 2))  
 
     def on_loop(self, update_time):
         """ Update loop """
         self.now += update_time
+
+        self.heading += self.turning
+
+        if self.heading < 0:
+            self.heading += 360
+
+        if self.heading > 360:
+            self.heading -= 360
+
+        print(self.heading)
 
     def on_render(self, color_key):
         """ Render event """
@@ -42,15 +54,16 @@ class Ship:
 
         self._display_surf.blit(background, rect)
         
-    def key_press(self, key):
+    def key_press(self, event):
         """ user input test """
-        if key == pygame.K_LEFT:
-            self.heading -= 5
-        if key == pygame.K_RIGHT:
-            self.heading += 5
-
-        if self.heading < 0:
-            self.heading += 360
-
-        if self.heading > 360:
-            self.heading -= 360
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_LEFT:
+                self.turning = 0
+            if event.key == pygame.K_RIGHT:
+                self.turning = 0
+        
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                self.turning = -1
+            if event.key == pygame.K_RIGHT:
+                self.turning = 1

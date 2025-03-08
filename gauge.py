@@ -82,7 +82,7 @@ class Gauge:
 
         self._display_surf.blit(background, (self.x_pos, self.y_pos))
         
-    def key_press(self, key):
+    def key_press(self, event):
         """ user input test """
         #if key == pygame.K_SPACE:
 
