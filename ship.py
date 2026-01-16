@@ -61,18 +61,31 @@ class Ship:
         background.set_colorkey(color_key)
         background.fill((128, 128, 128))
 
-        # making a copy of the old center of the rectangle  
-        old_center = (self.x_pos + (self.width // 2), self.y_pos + (self.length // 2))   
+        screen_width = self._display_surf.get_width()
+        screen_height = self._display_surf.get_height()
 
-        # rotating the orignal image  
-        new_image = pygame.transform.rotate(background, self.heading)  
-        rect = new_image.get_rect()  
-        # set the rotated rectangle to the old center  
-        rect.center = old_center
+        # rotating the original image (negate heading to match clockwise rotation)
+        rotated_image = pygame.transform.rotate(background, -self.heading)
 
-        background = pygame.transform.rotate(background, self.heading)
-
-        self._display_surf.blit(background, rect)
+        # List of positions to draw (original + wrapped positions)
+        positions = [(self.x_pos, self.y_pos)]
+        
+        # Add wrapped positions if ship is near edges
+        if self.x_pos > screen_width - self.width:
+            positions.append((self.x_pos - screen_width, self.y_pos))
+        if self.x_pos < self.width:
+            positions.append((self.x_pos + screen_width, self.y_pos))
+        if self.y_pos > screen_height - self.length:
+            positions.append((self.x_pos, self.y_pos - screen_height))
+        if self.y_pos < self.length:
+            positions.append((self.x_pos, self.y_pos + screen_height))
+        
+        # Draw ship at each position
+        for x, y in positions:
+            old_center = (x + (self.width // 2), y + (self.length // 2))
+            rect = rotated_image.get_rect()
+            rect.center = old_center
+            self._display_surf.blit(rotated_image, rect)
 
         self.position.draw(self._display_surf, (128, 128, 128))
         self.heading_display.draw(self._display_surf, (128, 128, 128))
@@ -101,5 +114,22 @@ class Ship:
 
     def update_position(self):
         """ Update the ship position """
-        self.x_pos += self.speed * math.sin(self.heading)
-        self.y_pos += self.speed * math.cos(self.heading)
+        # Convert heading (0° = up) to radians
+        radians = math.radians(self.heading)
+        self.x_pos += self.speed * math.sin(radians)
+        self.y_pos -= self.speed * math.cos(radians)
+        
+        # Wrap around screen edges
+        # You'll need to get the screen width and height
+        screen_width = self._display_surf.get_width()
+        screen_height = self._display_surf.get_height()
+        
+        if self.x_pos > screen_width:
+            self.x_pos = -self.width
+        elif self.x_pos < -self.width:
+            self.x_pos = screen_width
+    
+        if self.y_pos > screen_height:
+            self.y_pos = -self.length
+        elif self.y_pos < -self.length:
+            self.y_pos = screen_height
