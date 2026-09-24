@@ -20,8 +20,27 @@ This is the main application that creates the starfield scanner.
 
 It will render and update the scanner on the application loop.  The two are seperate so that second displays can be updating and switched to for drawing one at a time.
 
-# StarfieldScanner
+Press 1 -> 5 to control the active display.
+
+Updates will continue in the background on all of them while not rendering.
+
+# StarfieldScanner - 1
 This will create 40 random stars every few seconds.
 The Overlay consists of a targeting reticle, a grid and a text display of the current location and a history of the coordinates that the targeting reticle has been too.
 
+Pressing the spacebar will cause the star field to be regenerated.
+
 ![Example Image](ScreenShot.png)
+
+# Radar - 2
+A 360 radar that is tracking targets and when the sweeping arm passes a blip animation with be played.
+
+# Forward Sweep - 3
+A forward facing radar sweep that is tracking the same targets but scaled to just be in the front quadrent. This arm swings left and right.
+
+# Control Display - 4
+An early progress of displaying gauges and dials that update over time.
+
+# Ship - 5
+A blue field with a grey ship marker. Pressing arrow keys to accelerate/decelerate and turn. The world wraps on each edge.
+ 
