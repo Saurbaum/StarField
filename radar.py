@@ -124,8 +124,8 @@ class Radar:
         self.draw_blips(self._display_surf)
         self.draw_overlay(self._display_surf)
 
-        for target in self.targets:
-            target.on_render(self._display_surf, (0, 0))
+        # for target in self.targets:
+        #     target.on_render(self._display_surf, target.pos)
 
         pygame.display.update()
 

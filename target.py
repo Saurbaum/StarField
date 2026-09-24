@@ -17,9 +17,12 @@ class Target:
 
         self.strength = 50
 
-    def on_render(self, surface, translate):
-        ''' Translate is a multiplier that needs to shift a point based on how much of the screen is in view '''
-        pygame.draw.circle(surface, (128,128,128), (self.pos[0], self.pos[1]), 5)
+    def on_render(self, surface, position=None):
+        """Draw the target at a position supplied by the active view."""
+        if position is None:
+            position = self.pos
+
+        pygame.draw.circle(surface, (128,128,128), position, 5)
 
     def on_loop(self, update_time):
         """Main update loop"""
