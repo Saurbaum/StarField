@@ -57,7 +57,14 @@ class ForwardSweep:
             if test_point[0] < (width * 0.99):
                 self.max_angle = angle
 
-        self.overlay_surface.fill((0, 28, 0, 0))
+        self.overlay_surface.fill((0, 32, 0))
+        pygame.draw.polygon(
+            self.overlay_surface, (0, 0, 0, 0), (
+                self.arm_start_point,
+                rotate_point(self.arm_start_point, self.max_angle, self.arm_point),
+                (width - 1, 0),
+                (0, 0),
+                rotate_point(self.arm_start_point, -self.max_angle, self.arm_point)))
         pygame.draw.line(
             self.overlay_surface, self.colour, self.arm_start_point, rotate_point(
                 self.arm_start_point, self.max_angle, self.arm_point), 1)
